@@ -1,1 +1,10 @@
-export type { Book, Author , BookCardData, BookDetails, BookExcerpts} from './books.interface';
+export type {
+  Author,
+  Book,
+  BookBase,
+  BookCardData,
+  BookDetails,
+  BookExcerpts,
+  BookFromList,
+  BookFromWork,
+} from "./books.interface";

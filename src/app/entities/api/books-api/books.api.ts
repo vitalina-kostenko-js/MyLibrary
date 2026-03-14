@@ -1,8 +1,9 @@
-import { Book } from "../../../shared/interfaces";
+import { BookFromList, BookFromWork } from "../../../shared/interfaces";
 
-export const getBooksBySubject = async (subject: string): Promise<Book[]> => {
+export const getBooksBySubject = async (subject: string): Promise<BookFromList[]> => {
   const response = await fetch(
-    `https://openlibrary.org/subjects/${subject}.json`
+    `https://openlibrary.org/subjects/${subject}.json`,
+    { next: { revalidate: 3600 } }
   );
   if (!response.ok)
     throw new Error(
@@ -36,9 +37,10 @@ export const getBooksBySubject = async (subject: string): Promise<Book[]> => {
   );
 };
 
-export const getBookDetails = async (key: string): Promise<Book> => {
+export const getBookDetails = async (key: string): Promise<BookFromWork> => {
   const response = await fetch(
-    `https://openlibrary.org/works/${key}.json`
+    `https://openlibrary.org/works/${key}.json`,
+    { cache: 'no-store' }
   );
   if (!response.ok)
     throw new Error(

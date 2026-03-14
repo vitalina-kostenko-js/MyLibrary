@@ -16,12 +16,3 @@ export const mapToBookCard = (book: Book): BookCardData => {
 export const getImageCover = (cover_id: number): string => {
   return cover_id ? `https://covers.openlibrary.org/b/id/${cover_id}-L.jpg` : "/No-Cover-Image-01.png";
 };
-
-export const getAuthorName = async (workId: string) => {
-    const response = await fetch(`https://openlibrary.org/works/${workId}.json`);
-    const data = await response.json();
-    const authorKey = data.authors?.[0]?.author?.key;
-    const authorResponse = await fetch(`https://openlibrary.org${authorKey}.json`);
-    const authorData = await authorResponse.json();
-    return authorData.name;
-};

@@ -9,32 +9,32 @@ import {
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
 
-export const PaginationWithSecondary = () => (
+interface PaginationWithSecondaryProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}
+
+export const PaginationWithSecondary = ({ currentPage, totalPages, onPageChange }: PaginationWithSecondaryProps) => (
   <Pagination>
     <PaginationContent>
       <PaginationItem>
-        <PaginationPrevious href="#" />
-      </PaginationItem>
-      <PaginationItem>
-        <PaginationLink href="#">1</PaginationLink>
-      </PaginationItem>
-      <PaginationItem>
         <PaginationLink
           href="#"
+          onClick={() => onPageChange(2)}
           isActive
           className={cn(
             "hover:!text-secondary-foreground !border-none !shadow-none",
             buttonVariants({ variant: "secondary", size: "icon" })
           )}
         >
-          2
+          {currentPage}
         </PaginationLink>
       </PaginationItem>
       <PaginationItem>
-        <PaginationLink href="#">3</PaginationLink>
-      </PaginationItem>
-      <PaginationItem>
-        <PaginationNext href="#" />
+        <PaginationLink href="#" onClick={() => onPageChange(totalPages)}>
+          {totalPages}
+        </PaginationLink>
       </PaginationItem>
     </PaginationContent>
   </Pagination>

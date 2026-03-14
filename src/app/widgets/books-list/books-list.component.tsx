@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { CardHorizontal } from "../../shared/ui/card-horizontal";
 import { useBooksBySubject } from "../../shared/hooks";
-import { Book } from "../../shared/interfaces";
+import { BookFromList } from "../../shared/interfaces";
 import { getImageCover, mapToBookCard } from ".";
 
 const getBookId = (key: string) => key.split("/").filter(Boolean).pop() ?? key;
@@ -22,7 +22,7 @@ export const BooksListComponent = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.isArray(data) &&
-          data.map((book: Book) => (
+          data.map((book: BookFromList) => (
             <div key={book.key} className="min-h-0">
               <Link
                 href={`/${locale}/items/${getBookId(book.key)}`}
@@ -37,7 +37,7 @@ export const BooksListComponent = () => {
                           src={getImageCover(book.cover_id ?? 0)}
                           alt={`${book.title} cover`}
                           fill
-                          className="object-cover rounded p-2"
+                          className="object-contain rounded p-2"
                         />
                       </div>
                     ) : (
@@ -46,7 +46,7 @@ export const BooksListComponent = () => {
                           src="/No-Cover-Image-01.png"
                           alt={`${book.title} cover`}
                           fill
-                          className="object-cover rounded p-2"
+                          className="object-contain rounded p-2"
                         />
                       </div>
                     )

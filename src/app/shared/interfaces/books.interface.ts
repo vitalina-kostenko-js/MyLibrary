@@ -1,17 +1,41 @@
-export interface Book {
+// --- Base & API response types ---
+
+export interface Author {
+  name: string;
+  key: string;
+}
+
+export interface BookBase {
   key: string;
   title: string;
-  cover_id?: number;
-  first_publish_year?: number;
   authors: Author[];
   subjects: string[];
 }
+
+export interface BookFromList extends BookBase {
+  cover_id?: number;
+  first_publish_year?: number;
+}
+
+export interface BookFromWork extends BookBase {
+  cover_id?: number;
+  covers?: number[];
+  first_publish_year?: number;
+  first_publish_date?: string;
+  description?: string | { type?: string; value?: string };
+  url?: string;
+}
+
+export type Book = BookFromList | BookFromWork;
+
+// --- UI / view types ---
 
 export interface BookCardData {
   title: string;
   author: string;
   subjects: string[];
   first_publish_year: number;
+  first_publish_date?: string;
 }
 
 export interface BookDetails {
@@ -20,13 +44,13 @@ export interface BookDetails {
   url: string;
 }
 
-export interface BookExcerpts{
+export interface BookExcerpts {
   excerpt: string;
   comment: string;
   author: string;
 }
 
-export interface Author {
-  name: string;
-  key: string;
+export interface ReadingStatistics {
+  currently_reading_count: number;
+  want_to_read_count: number;
 }
