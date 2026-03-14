@@ -1,0 +1,2 @@
+// font.ts
+export {};

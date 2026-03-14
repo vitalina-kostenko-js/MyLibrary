@@ -1,0 +1,1 @@
+export type { Book, Author , BookCardData, BookDetails, BookExcerpts} from './books.interface';
