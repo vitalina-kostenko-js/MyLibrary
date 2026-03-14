@@ -1,0 +1,17 @@
+{
+  "book": {
+    "author": "Autor",
+    "description": "Beschreibung",
+    "genre": "Fächer",
+    "noCover": "Kein Cover",
+    "noGenreFound": "Keine Fächer gefunden",
+    "readMore": "Mehr lesen",
+    "subjects": "Fächer",
+    "year": "Jahr"
+  },
+  "navigation": {
+    "books": "Bücher",
+    "home": "Startseite",
+    "backToList": "Zurück zur Liste"
+  }
+}

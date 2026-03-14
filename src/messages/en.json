@@ -1,0 +1,17 @@
+{
+  "book": {
+    "author": "Author",
+    "description": "Description",
+    "genre": "Genre",
+    "noCover": "No cover",
+    "noGenreFound": "No genres found",
+    "readMore": "Read more",
+    "subjects": "Genres",
+    "year": "Year"
+  },
+  "navigation": {
+    "books": "Books",
+    "home": "Home",
+    "backToList": "Back to list"
+  }
+}

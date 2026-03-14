@@ -1,4 +1,10 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from 'next-intl/plugin';
+import path from "path";
+import dotenv from "dotenv";
+
+dotenv.config({ path: path.resolve(process.cwd(), 'src/config/env/.env.local') });
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   images: {
@@ -12,4 +18,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);
