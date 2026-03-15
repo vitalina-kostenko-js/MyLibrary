@@ -1,0 +1,29 @@
+import { QueryClient } from "@tanstack/react-query";
+import { dehydrate } from "@tanstack/react-query";
+import { getBooksBySubject } from "../../../entities/api";
+import { DashboardLayout } from "../../../widgets/dashboard-layout";
+import { BooksListComponent } from "../../../widgets/books-list";
+import { ReactQueryHydration } from "../../../shared/providers";
+
+const LIST_QUERY_KEY = ["booksBySubject", "subject"] as const;
+
+export default async function ItemsPage() {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: LIST_QUERY_KEY,
+    queryFn: () => getBooksBySubject("subject"),
+  });
+
+  const dehydratedState = dehydrate(queryClient);
+
+  return (
+    <ReactQueryHydration state={dehydratedState}>
+      <div>
+        <DashboardLayout>
+          <BooksListComponent />
+        </DashboardLayout>
+      </div>
+    </ReactQueryHydration>
+  );
+}
