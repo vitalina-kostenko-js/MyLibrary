@@ -1,96 +1,56 @@
-'use client'
-
-import type { ReactNode } from 'react'
-
+"use client";
+import { useParams } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
+import { ProfileMenuContent } from "./profile-menu-content.component";
+import { Button } from "../../../../../components/ui/button";
 import {
-  UserIcon,
-  SettingsIcon,
-  CreditCardIcon,
-  UsersIcon,
-  SquarePenIcon,
-  CirclePlusIcon,
-  LogOutIcon
-} from 'lucide-react'
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../../../components/ui/avatar";
+import { LoginButton, RegisterButton } from "../../../features/auth-form";
+import { useAuthStore } from "@/app/shared/store/auth.store";
 
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+const ProfileDropdown = () => {
+  const params = useParams();
+  const locale = (params.locale as string) ?? "en";
+  const { data: session, status } = useSession();
 
-type Props = {
-  trigger: ReactNode
-  defaultOpen?: boolean
-  align?: 'start' | 'center' | 'end'
-}
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
 
-const ProfileDropdown = ({ trigger, defaultOpen, align = 'end' }: Props) => {
-  return (
-    <DropdownMenu defaultOpen={defaultOpen}>
-      <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
-      <DropdownMenuContent className='w-80' align={align || 'end'}>
-        <DropdownMenuLabel className='flex items-center gap-4 px-4 py-2.5 font-normal'>
-          <div className='relative'>
-            <Avatar className='size-10'>
-              <AvatarImage src='https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-1.png' alt='John Doe' />
+  if (status === "authenticated") {
+    const callbackUrl = `/${locale}`;
+    return (
+      <ProfileMenuContent
+        session={session}
+        onLogout={() => {
+          useAuthStore.getState().clearAuth();
+          signOut({ callbackUrl });
+        }}
+        trigger={
+          <Button variant="ghost" size="icon">
+            <Avatar className="size-9.5 rounded-md">
+              <AvatarImage src="https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-1.png" />
               <AvatarFallback>JD</AvatarFallback>
             </Avatar>
-            <span className='ring-card absolute right-0 bottom-0 block size-2 rounded-full bg-green-600 ring-2' />
-          </div>
-          <div className='flex flex-1 flex-col items-start'>
-            <span className='text-foreground text-lg font-semibold'>John Doe</span>
-            <span className='text-muted-foreground text-base'>john.doe@example.com</span>
-          </div>
-        </DropdownMenuLabel>
+          </Button>
+        }
+      />
+    );
+  }
 
-        <DropdownMenuSeparator />
+  if (status === "unauthenticated") {
+    return (
+      <div className="flex items-center gap-1.5">
+        <LoginButton />
+        <RegisterButton />
+      </div>
+    );
+  }
 
-        <DropdownMenuGroup>
-          <DropdownMenuItem className='px-4 py-2.5 text-base'>
-            <UserIcon className='text-foreground size-5' />
-            <span>My account</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className='px-4 py-2.5 text-base'>
-            <SettingsIcon className='text-foreground size-5' />
-            <span>Settings</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className='px-4 py-2.5 text-base'>
-            <CreditCardIcon className='text-foreground size-5' />
-            <span>Billing</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+  return null;
+};
 
-        <DropdownMenuSeparator />
-
-        <DropdownMenuGroup>
-          <DropdownMenuItem className='px-4 py-2.5 text-base'>
-            <UsersIcon className='text-foreground size-5' />
-            <span>Manage team</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className='px-4 py-2.5 text-base'>
-            <SquarePenIcon className='text-foreground size-5' />
-            <span>Customization</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem className='px-4 py-2.5 text-base'>
-            <CirclePlusIcon className='text-foreground size-5' />
-            <span>Add team account</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-
-        <DropdownMenuSeparator />
-
-        <DropdownMenuItem className='px-4 py-2.5 text-base text-destructive focus:bg-destructive/10 focus:text-destructive'>
-          <LogOutIcon className='size-5' />
-          <span>Logout</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}
-
-export default ProfileDropdown
+export default ProfileDropdown;
