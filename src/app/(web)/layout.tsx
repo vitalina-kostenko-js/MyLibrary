@@ -5,6 +5,7 @@ import "../(web)/globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { routing } from "../../i18n/routing";
+import { AuthSessionProvider } from "../shared/providers";
 import { notFound } from "next/navigation";
 
 const geistSans = Geist({
@@ -21,6 +22,9 @@ export const metadata: Metadata = {
   title: "MyLibrary",
   description:
     "MyLibrary is a library management system that allows you to manage your books and authors.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export function generateStaticParams() {
@@ -43,7 +47,9 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <AuthSessionProvider>
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+          </AuthSessionProvider>
         </NextIntlClientProvider>
       </body>
     </html>
