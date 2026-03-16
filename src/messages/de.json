@@ -75,5 +75,14 @@
     "title": "Seite nicht gefunden",
     "description": "Wir konnten die Seite nicht finden",
     "backToHome": "Zurück zur Startseite"
+  },
+  "home": {
+    "title": "Willkommen bei der Buchbibliothek",
+    "welcome": "Hallo",
+    "welcomeDescription": "Willkommen in der Bibliothek",
+    "description": "Um die Bibliothek zu betrachten und Bücher zu erkunden, müssen Sie ein Konto erstellen oder sich anmelden.",
+    "signIn": "Anmelden",
+    "createAccount": "Konto erstellen",
+    "viewLibrary": "Bibliothek ansehen"
   }
 }

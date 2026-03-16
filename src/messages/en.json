@@ -76,5 +76,14 @@
     "title": "Page Not Found",
     "description": "We couldn't find the page you are looking for",
     "backToHome": "Back to home page"
+  },
+  "home": {
+    "title": "Welcome to Book Library",
+    "welcome": "Hi",
+    "welcomeDescription": "Welcome to the library",
+    "description": "To view the library and explore books you need to create an account or sign in.",
+    "signIn": "Sign in",
+    "createAccount": "Create account",
+    "viewLibrary": "View Library"
   }
 }
