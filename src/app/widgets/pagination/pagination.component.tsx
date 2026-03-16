@@ -8,8 +8,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
-import { usePagination } from "../../hooks/usePagination.hook";
 import { usePathname, useRouter } from "next/navigation";
+import { usePagination } from "../../shared/hooks/usePagination.hook";
 
 interface PaginationWithSecondaryProps {
   itemsPerPage: number;
@@ -66,6 +66,7 @@ export const PaginationComponent = ({
 
         <PaginationItem>
           <PaginationNext
+            data-testid="pagination-next"
             onClick={() => {
               if (page < totalPages) handlePageChange(page + 1);
             }}

@@ -12,7 +12,7 @@ export default async function ItemsPage() {
 
   await queryClient.prefetchQuery({
     queryKey: LIST_QUERY_KEY,
-    queryFn: () => getBooksBySubject("subject"),
+    queryFn: () => getBooksBySubject("science_fiction"),
   });
 
   const dehydratedState = dehydrate(queryClient);

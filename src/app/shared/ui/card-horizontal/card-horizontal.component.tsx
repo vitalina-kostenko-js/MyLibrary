@@ -29,7 +29,7 @@ export const CardHorizontal = ({ data, media, children }: CardHorizontalProps) =
       </CardContent>
       <div className="sm:min-w-54">
         <CardHeader className="pt-6">
-          <CardTitle>{title}</CardTitle>
+          <CardTitle data-testid="item-title">{title}</CardTitle>
           <CardDescription>{author}</CardDescription>
           <CardDescription>
             {subjects.length > 0 ? (
@@ -45,7 +45,7 @@ export const CardHorizontal = ({ data, media, children }: CardHorizontalProps) =
                         {t("readMore")}
                       </button>
                     </HoverCardTrigger>
-                    <HoverCardContent className="flex w-64 flex-col gap-0.5">
+                    <HoverCardContent className="flex w-120 flex-col gap-0.5">
                       <p className="text-sm text-muted-foreground">
                         {subjects.join(", ")}
                       </p>
