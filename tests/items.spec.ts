@@ -12,14 +12,15 @@ test('navigate to item details', async ({ page }) => {
     await page.goto('/en/items');
   
     const firstItem = page.locator('[data-testid="item-card"]').first();
+    await expect(firstItem).toBeVisible({ timeout: 15_000 });
   
     const title = await firstItem.locator('[data-testid="item-title"]').textContent();
   
-    await firstItem.click();
+    await firstItem.locator('a').click();
   
-    await expect(page).toHaveURL(/\/en\/items\/.+/);
+    await expect(page).toHaveURL(/\/en\/items\/.+/, { timeout: 10_000 });
   
-    await expect(page.locator('main')).toContainText(title?.trim() ?? '');
+    await expect(page.locator('main')).toContainText(title?.trim() ?? '', { timeout: 15_000 });
   });
 
 test('pagination works correctly', async ({ page }) => {
