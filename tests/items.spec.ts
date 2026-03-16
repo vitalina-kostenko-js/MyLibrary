@@ -9,6 +9,7 @@ test('items list is visible', async ({ page }) => {
   });
 
 test('navigate to item details', async ({ page }) => {
+    test.skip(!!process.env.CI, 'Detail page depends on Open Library API (server-side); run locally');
     await page.goto('/en/items');
   
     const firstItem = page.locator('[data-testid="item-card"]').first();
