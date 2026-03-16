@@ -1,4 +1,3 @@
-export { PaginationWithSecondary } from "../../widgets/pagination";
 export { CardHorizontal } from "./card-horizontal";
 export { ContainerUI } from "./container";
 export { LanguageDropdown } from "./dropdown-language";
