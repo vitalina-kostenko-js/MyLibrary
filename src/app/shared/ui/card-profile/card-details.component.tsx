@@ -28,7 +28,7 @@ export const CardDetails = ({
   return (
     <Card className="grid grid-cols-[auto_1fr] w-full py-0 sm:flex-row sm:gap-0 transition-colors duration-200 hover:bg-accent/50 hover:border-accent h-full">
       <CardContent className="grow-1 px-0">
-        <div className="relative w-[400px] h-[600px]">{media ?? null}</div>
+        <div className="relative sm:w-[400px] sm:h-[600px] w-[200px] h-[300px]">{media ?? null}</div>
       </CardContent>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
