@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import type { ReactNode } from "react";
+import { useState } from "react";
 
 import {
   DropdownMenu,
@@ -10,8 +10,8 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePathname, useRouter } from "@/src/i18n/navigation";
 import { useLocale } from "next-intl";
-import { useRouter, usePathname } from "@/src/i18n/navigation";
 import { useRouter as useNextRouter } from "next/navigation";
 
 type Props = {
@@ -33,7 +33,8 @@ const LanguageDropdown = ({ defaultOpen, align, trigger }: Props) => {
 
   const [language, setLanguage] = useState(locale);
 
-  const pathnameWithoutLocale = pathname.replace(/^\/(en|de)(\/|$)/, '$2') || '/';
+  const pathnameWithoutLocale =
+    pathname.replace(/^\/(en|de)(\/|$)/, "$2") || "/";
 
   const handleChange = (value: string) => {
     setLanguage(value);
