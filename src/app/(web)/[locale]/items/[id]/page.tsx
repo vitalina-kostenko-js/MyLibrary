@@ -13,19 +13,20 @@ interface ItemPageProps {
 }
 
 export async function generateMetadata({ params }: ItemPageProps): Promise<Metadata> {
+  const t = await getTranslations("generateMetadata");
   const { id } = await params;
   const data = await getItemPageData(id);
   if (!data) {
-    return { title: "Not found" };
+    return { title: t("notFound") };
   }
-  const title = data.book.title ?? "Book";
+  const title = data.book.title ?? t("bookTitle");
   const description =
     typeof data.book.description === "string"
       ? data.book.description.slice(0, 160)
       : (data.book.description as { value?: string })?.value?.slice(0, 160) ?? data.cardData.title;
   return {
-    title: `${title} | MyLibrary`,
-    description: description || `Details for ${title}`,
+    title: `${title} | ${t("title")}`,
+    description: description || `${t("description")} ${title}`,
   };
 }
 

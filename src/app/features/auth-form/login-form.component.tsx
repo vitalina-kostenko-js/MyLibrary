@@ -17,13 +17,17 @@ import { loginSchema, type LoginFormValues } from "./auth-form.schema";
 import { loginUser } from "./auth-form.service";
 import { useAuthStore } from "@/app/shared/store/auth.store";
 import type { User } from "@/app/shared/store/auth.interface";
+import { useTranslations } from "next-intl";
 
 export function LoginForm() {
+  const t = useTranslations("form_login");
+  const tSchema = useTranslations("auth_shema");
+
   const router = useRouter();
   const params = useParams();
   const locale = (params.locale as string) ?? "en";
   const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(loginSchema(tSchema)),
     defaultValues: { email: "", password: "" },
   });
 
@@ -48,7 +52,7 @@ export function LoginForm() {
       router.push(`/${locale}/items`);
       router.refresh();
     } catch {
-      form.setError("root", { message: "Login failed" });
+      form.setError("root", { message: t("loginFailed") });
     }
   };
 
@@ -65,8 +69,8 @@ export function LoginForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Input placeholder="Enter email" {...field} />
+              <FormLabel>{t("email")}</FormLabel>
+              <Input placeholder={t("enterEmail")} {...field} />
               <FormMessage />
             </FormItem>
           )}
@@ -77,15 +81,15 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
-              <Input type="password" placeholder="Enter password" {...field} />
+              <FormLabel>{t("password")}</FormLabel>
+              <Input type="password" placeholder={t("enterPassword")} {...field} />
               <FormMessage />
             </FormItem>
           )}
         />
 
         <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? "Logging in..." : "Log in"}
+          {form.formState.isSubmitting ? t("loggingIn") : t("login")}
         </Button>
       </form>
     </Form>

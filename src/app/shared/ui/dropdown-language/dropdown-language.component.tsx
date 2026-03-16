@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/src/i18n/navigation";
+import { useRouter as useNextRouter } from "next/navigation";
 
 type Props = {
   trigger: ReactNode;
@@ -25,6 +26,7 @@ const LOCALES = [
 ] as const;
 
 const LanguageDropdown = ({ defaultOpen, align, trigger }: Props) => {
+  const nextRouter = useNextRouter();
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
@@ -36,6 +38,7 @@ const LanguageDropdown = ({ defaultOpen, align, trigger }: Props) => {
   const handleChange = (value: string) => {
     setLanguage(value);
     router.replace(pathnameWithoutLocale, { locale: value });
+    nextRouter.refresh();
   };
 
   return (

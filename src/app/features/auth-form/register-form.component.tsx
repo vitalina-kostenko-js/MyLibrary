@@ -14,13 +14,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { registerUser } from "./auth-form.service";
+import { useTranslations } from "next-intl";
 
 export function RegisterForm() {
+  const t = useTranslations("form_register");
+  const tSchema = useTranslations("auth_shema");
+
   const router = useRouter();
   const params = useParams();
   const locale = (params.locale as string) ?? "en";
   const form = useForm<RegisterFormValues>({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(registerSchema(tSchema)),
     defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
   });
 
@@ -31,7 +35,7 @@ export function RegisterForm() {
       router.refresh();
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : "Registration failed";
+        err instanceof Error ? err.message : t("registrationFailed");
       form.setError("root", { message });
     }
   };
@@ -49,8 +53,8 @@ export function RegisterForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
-              <Input placeholder="Enter name" {...field} />
+              <FormLabel>{t("name")}</FormLabel>
+              <Input placeholder={t("enterName")} {...field} />
               <FormMessage />
             </FormItem>
           )}
@@ -61,8 +65,8 @@ export function RegisterForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Input placeholder="Enter email" {...field} />
+              <FormLabel>{t("email")}</FormLabel>
+              <Input placeholder={t("enterEmail")} {...field} />
               <FormMessage />
             </FormItem>
           )}
@@ -73,8 +77,8 @@ export function RegisterForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
-              <Input type="password" placeholder="Enter password" {...field} />
+              <FormLabel>{t("password")}</FormLabel>
+              <Input type="password" placeholder={t("enterPassword")} {...field} />
               <FormMessage />
             </FormItem>
           )}
@@ -85,10 +89,10 @@ export function RegisterForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password confirmation</FormLabel>
+              <FormLabel>{t("confirmPassword")}</FormLabel>
               <Input
                 type="password"
-                placeholder="Repeat the password"
+                placeholder={t("enterConfirmPassword")}
                 {...field}
               />
               <FormMessage />
@@ -97,7 +101,7 @@ export function RegisterForm() {
         />
 
         <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? "Creating account..." : "Register"}
+          {form.formState.isSubmitting ? t("creatingAccount") : t("register")}
         </Button>
       </form>
     </Form>

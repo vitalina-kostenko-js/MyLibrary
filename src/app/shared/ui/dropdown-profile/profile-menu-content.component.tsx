@@ -18,6 +18,7 @@ import {
   LogOutIcon,
 } from "lucide-react";
 import { ReactNode } from "react";
+import { useTranslations } from "next-intl";
 
 interface Props {
   trigger: ReactNode;
@@ -41,6 +42,7 @@ export const ProfileMenuContent = ({
   session,
   onLogout,
 }: Props & { session: Session }) => {
+  const t = useTranslations("profile_menu");
   const { user } = session;
 
   const itemClasses =
@@ -69,7 +71,7 @@ export const ProfileMenuContent = ({
           </div>
           <div className="flex flex-col space-y-0.5 overflow-hidden">
             <span className="truncate text-sm font-semibold text-slate-900 dark:text-slate-50">
-              {user?.name ?? "User"}
+              {user?.name ?? t("user")}
             </span>
             <span className="truncate text-xs text-slate-500 dark:text-slate-400">
               {user?.email ?? ""}
@@ -82,15 +84,15 @@ export const ProfileMenuContent = ({
         <DropdownMenuGroup>
           <DropdownMenuItem className={itemClasses}>
             <UserIcon className="size-5 text-slate-500" />
-            <span>My account</span>
+            <span>{t("myAccount")}</span>
           </DropdownMenuItem>
           <DropdownMenuItem className={itemClasses}>
             <SettingsIcon className="size-5 text-slate-500" />
-            <span>Settings</span>
+            <span>{t("settings")}</span>
           </DropdownMenuItem>
           <DropdownMenuItem className={itemClasses}>
             <CreditCardIcon className="size-5 text-slate-500" />
-            <span>Billing</span>
+            <span>{t("billing")}</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
 
@@ -99,15 +101,15 @@ export const ProfileMenuContent = ({
         <DropdownMenuGroup>
           <DropdownMenuItem className={itemClasses}>
             <UsersIcon className="size-5 text-slate-500" />
-            <span>Manage team</span>
+            <span>{t("manageTeam")}</span>
           </DropdownMenuItem>
           <DropdownMenuItem className={itemClasses}>
             <SquarePenIcon className="size-5 text-slate-500" />
-            <span>Customization</span>
+            <span>{t("customization")}</span>
           </DropdownMenuItem>
           <DropdownMenuItem className={itemClasses}>
             <CirclePlusIcon className="size-5 text-slate-500" />
-            <span>Add team account</span>
+            <span>{t("addTeamAccount")}</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
 
@@ -121,7 +123,7 @@ export const ProfileMenuContent = ({
           }}
         >
           <LogOutIcon className="size-5" />
-          <span>Logout</span>
+          <span>{t("logout")}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -10,14 +10,16 @@ import {
 } from "../../../../../components/ui/avatar";
 import { LoginButton, RegisterButton } from "../../../features/auth-form";
 import { useAuthStore } from "@/app/shared/store/auth.store";
+import { useTranslations } from "next-intl";
 
 const ProfileDropdown = () => {
+  const tLoading = useTranslations("loading");
   const params = useParams();
   const locale = (params.locale as string) ?? "en";
   const { data: session, status } = useSession();
 
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return <div>{tLoading("loading")}</div>;
   }
 
   if (status === "authenticated") {

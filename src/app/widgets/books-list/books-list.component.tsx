@@ -7,18 +7,22 @@ import { CardHorizontal } from "../../shared/ui/card-horizontal";
 import { useBooksBySubject } from "../../shared/hooks";
 import { BookFromList } from "../../shared/interfaces";
 import { getImageCover, mapToBookCard } from ".";
+import { useTranslations } from "next-intl";
 
 const getBookId = (key: string) => key.split("/").filter(Boolean).pop() ?? key;
 
 export const BooksListComponent = () => {
+  const t = useTranslations("books_list");
+  const tLoading = useTranslations("loading");
+  const tError = useTranslations("error");
   const params = useParams();
   const locale = (params.locale as string) ?? "en";
   const { data, isLoading, error } = useBooksBySubject("subject");
 
   return (
     <>
-      {isLoading && <div>Loading...</div>}
-      {error && <div>Error: {error.message}</div>}
+      {isLoading && <div>{tLoading("loading")}</div>}
+      {error && <div>{tError("error")}: {error.message}</div>}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.isArray(data) &&
