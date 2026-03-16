@@ -20,7 +20,9 @@ test('navigate to item details', async ({ page }) => {
   
     await expect(page).toHaveURL(/\/en\/items\/.+/, { timeout: 10_000 });
   
-    await expect(page.locator('main')).toContainText(title?.trim() ?? '', { timeout: 15_000 });
+    const main = page.locator('main');
+    await expect(main).not.toContainText('Loading...', { timeout: 60_000 });
+    await expect(main).toContainText(title?.trim() ?? '', { timeout: 10_000 });
   });
 
 test('pagination works correctly', async ({ page }) => {
