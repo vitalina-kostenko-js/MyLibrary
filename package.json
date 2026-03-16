@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "env-cmd -f src/config/env/.env.local next dev",
-    "build": "env-cmd -f src/config/env/.env.local next build",
-    "start": "env-cmd -f src/config/env/.env.local next start"
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
     "@auth/supabase-adapter": "^1.11.1",
