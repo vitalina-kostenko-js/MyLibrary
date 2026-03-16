@@ -14,7 +14,6 @@ const getBookId = (key: string) => key.split("/").filter(Boolean).pop() ?? key;
 export const BooksListComponent = () => {
   const t = useTranslations("books_list");
   const tLoading = useTranslations("loading");
-  const tError = useTranslations("error");
   const params = useParams();
   const locale = (params.locale as string) ?? "en";
   const { data, isLoading, error } = useBooksBySubject("subject");
@@ -22,7 +21,7 @@ export const BooksListComponent = () => {
   return (
     <>
       {isLoading && <div>{tLoading("loading")}</div>}
-      {error && <div>{tError("error")}: {error.message}</div>}
+      {error && <div>{t("error")}: {error.message}</div>}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.isArray(data) &&
