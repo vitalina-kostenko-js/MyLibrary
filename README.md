@@ -169,7 +169,7 @@ https://openlibrary.org/subjects/science_fiction.json
 Run Playwright tests
 
 ```bash
-npm run test
+npx playwright test
 ```
 
 Приклади тестів:
