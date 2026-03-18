@@ -9,6 +9,7 @@ export const useBooksBySubject = (subject: string) => {
     const { data, isLoading, error } = useQuery<BookFromList[]>({
         queryKey: ['booksBySubject', subject],
         queryFn: () => getBooksBySubject(subject),  
+        enabled: !!subject
     });
 
     return { data, isLoading, error };
