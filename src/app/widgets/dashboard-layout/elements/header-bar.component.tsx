@@ -11,6 +11,7 @@ import { LanguagesIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { LanguageDropdown } from "../../../shared/ui/dropdown-language";
 import { ProfileDropdown } from "../../../shared/ui/dropdown-profile";
+import SearchBar from "../../search-bar/search-bar";
 
 export const HeaderBar = () => {
   const t = useTranslations("navigation");
@@ -31,6 +32,7 @@ export const HeaderBar = () => {
           </Breadcrumb>
         </div>
         <div className="flex items-center gap-1.5">
+          <SearchBar />
           <LanguageDropdown
             trigger={
               <Button variant="ghost" size="icon">
