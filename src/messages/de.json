@@ -12,6 +12,82 @@
   "navigation": {
     "books": "Bücher",
     "home": "Startseite",
+    "about": "Über uns",
     "backToList": "Zurück zur Liste"
+  },
+  "form_register": {
+    "registrationFailed": "Registrierung fehlgeschlagen",
+    "enterName": "Name eingeben",
+    "enterEmail": "Email eingeben",
+    "enterPassword": "Passwort eingeben",
+    "enterConfirmPassword": "Passwort bestätigen",
+    "createAccount": "Konto erstellen",
+    "creatingAccount": "Konto erstellen...",
+    "register": "Registrieren",
+    "name": "Name",
+    "email": "Email",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "alreadyHaveAccount": "Bereits ein Konto?"
+  },
+  "form_login": {
+    "loginFailed": "Login fehlgeschlagen",
+    "enterEmail": "Email eingeben",
+    "enterPassword": "Passwort eingeben",
+    "login": "Login",
+    "loggingIn": "Login...",
+    "email": "Email",
+    "password": "Passwort",
+    "dontHaveAccount": "Noch kein Konto?"
+  },
+  "auth_shema": {
+    "invalidEmail": "Ungültige Email",
+    "nameIsRequired": "Name ist erforderlich.",
+    "passwordMustBeAtLeast8CharactersLong": "Passwort muss mindestens 8 Zeichen lang sein.",
+    "passwordConfirmationIsRequired": "Passwortbestätigung ist erforderlich.",
+    "passwordsDoNotMatch": "Passwörter stimmen nicht überein."
+  },
+  "profile_menu": {
+    "user": "Benutzer",
+    "myAccount": "Mein Konto",
+    "settings": "Einstellungen",
+    "billing": "Rechnung",
+    "manageTeam": "Team verwalten",
+    "customization": "Anpassung",
+    "addTeamAccount": "Team-Konto hinzufügen",
+    "logout": "Abmelden"
+  },
+  "loading": {
+    "loading": "Lädt..."
+  },
+  "error": {
+    "error": "Fehler"
+  },
+  "generateMetadata": {
+    "notFound": "Nicht gefunden",
+    "title": "MyLibrary",
+    "description": "Details für",
+    "bookTitle": "Buch"
+  },
+  "books_list": {
+    "loading": "Lädt..."
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Wir konnten die Seite nicht finden",
+    "backToHome": "Zurück zur Startseite"
+  },
+  "about": {
+    "title": "Über MyLibrary",
+    "description": "MyLibrary ist eine Bibliotheksanwendung, in der Sie Bücher durchsuchen, Details anzeigen und Ihre Leseliste verwalten können. Die App unterstützt mehrere Sprachen (Englisch und Deutsch) und nutzt die Open Library API für Buchdaten."
+  },
+  "home": {
+    "title": "Willkommen bei der Buchbibliothek",
+    "welcome": "Hallo",
+    "welcomeDescription": "Willkommen in der Bibliothek",
+    "description": "Um die Bibliothek zu betrachten und Bücher zu erkunden, müssen Sie ein Konto erstellen oder sich anmelden.",
+    "signIn": "Anmelden",
+    "createAccount": "Konto erstellen",
+    "viewLibrary": "Bibliothek ansehen"
   }
 }
