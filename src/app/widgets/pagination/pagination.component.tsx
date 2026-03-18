@@ -8,8 +8,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
-import { usePathname, useRouter } from "next/navigation";
-import { usePagination } from "../../shared/hooks/usePagination.hook";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface PaginationWithSecondaryProps {
   itemsPerPage: number;
@@ -24,12 +23,16 @@ export const PaginationComponent = ({
 }: PaginationWithSecondaryProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { page, totalPages, setPage } = usePagination(totalItems, itemsPerPage);
+  const searchParams = useSearchParams();
 
-  const handlePageChange = (page: number) => {
-    router.replace(`${pathname}?page=${page}`);
-    setPage(page);
-    onPageChange?.(page);
+  const page = Number(searchParams.get("page") || "1");
+  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(newPage));
+    router.replace(`${pathname}?${params.toString()}`);
+    onPageChange?.(newPage);
   };
 
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);

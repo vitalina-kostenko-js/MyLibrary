@@ -11,23 +11,29 @@ import { BookFromList } from "../../shared/interfaces";
 import { CardHorizontal } from "../../shared/ui/card-horizontal";
 import { PaginationComponent } from "../pagination";
 
+interface BooksListComponentProps {
+  dataBooks?: BookFromList[];
+  subject?: string;
+  page?: number;
+}
+
 const getBookId = (key: string) => key.split("/").filter(Boolean).pop() ?? key;
 
-export const BooksListComponent = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+export const BooksListComponent = ({ dataBooks, subject, page }: BooksListComponentProps) => {
   const itemsPerPage = 12;
 
   const t = useTranslations("books_list");
   const tLoading = useTranslations("loading");
   const params = useParams();
   const locale = (params.locale as string) ?? "en";
-  const { data, isLoading, error } = useBooksBySubject("science_fiction");
+  const { data: fetchedData, isLoading, error } = useBooksBySubject(subject ?? "");
+  const data = dataBooks ?? fetchedData;
 
   const paginatedData = useMemo(() => {
     if (!Array.isArray(data)) return [];
-    const start = (currentPage - 1) * itemsPerPage;
+    const start = ((page ?? 1) - 1) * itemsPerPage;
     return data.slice(start, start + itemsPerPage);
-  }, [data, currentPage]);
+  }, [data, page]);
 
   return (
     <>
@@ -42,7 +48,6 @@ export const BooksListComponent = () => {
         <PaginationComponent
           totalItems={data?.length ?? 0}
           itemsPerPage={itemsPerPage}
-          onPageChange={(page) => setCurrentPage(page)}
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

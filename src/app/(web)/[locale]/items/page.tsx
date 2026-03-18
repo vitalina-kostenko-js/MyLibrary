@@ -5,7 +5,7 @@ import { DashboardLayout } from "../../../widgets/dashboard-layout";
 import { BooksListComponent } from "../../../widgets/books-list";
 import { ReactQueryHydration } from "../../../shared/providers";
 
-const LIST_QUERY_KEY = ["booksBySubject", "subject"] as const;
+const LIST_QUERY_KEY = ["booksBySubject", "science_fiction"] as const;
 
 export default async function ItemsPage() {
   const queryClient = new QueryClient();
@@ -21,7 +21,7 @@ export default async function ItemsPage() {
     <ReactQueryHydration state={dehydratedState}>
       <div>
         <DashboardLayout>
-          <BooksListComponent />
+        <BooksListComponent subject="science_fiction" page={1} />
         </DashboardLayout>
       </div>
     </ReactQueryHydration>
