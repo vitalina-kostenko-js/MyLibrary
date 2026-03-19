@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import { supabaseAuth } from "../supabase/client";
 
 const authOptions = {
+  basePath: "/entities/api/auth",
   secret:
     process.env.AUTH_SECRET ||
     (process.env.NODE_ENV === "development"
