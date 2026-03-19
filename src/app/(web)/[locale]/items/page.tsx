@@ -7,7 +7,11 @@ import { ReactQueryHydration } from "../../../shared/providers";
 
 const LIST_QUERY_KEY = ["booksBySubject", "science_fiction"] as const;
 
-export default async function ItemsPage() {
+interface ItemsPageProps {
+  searchParams?: Promise<{ page: number }>;
+}
+
+export default async function ItemsPage({ searchParams }: ItemsPageProps) {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
@@ -17,11 +21,18 @@ export default async function ItemsPage() {
 
   const dehydratedState = dehydrate(queryClient);
 
+  const sp = await searchParams?.catch(() => ({}));
+  const pageParam = (sp as { page: number })?.page;
+  const pageNumber =
+    pageParam === undefined
+      ? 1
+      : Math.max(1, parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam, 10) || 1);
+
   return (
     <ReactQueryHydration state={dehydratedState}>
       <div>
         <DashboardLayout>
-        <BooksListComponent subject="science_fiction" page={1} />
+          <BooksListComponent subject="science_fiction" page={pageNumber} />
         </DashboardLayout>
       </div>
     </ReactQueryHydration>

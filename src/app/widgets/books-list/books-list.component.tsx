@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getImageCover, mapToBookCard } from ".";
 import { useBooksBySubject } from "../../shared/hooks";
 import { BookFromList } from "../../shared/interfaces";

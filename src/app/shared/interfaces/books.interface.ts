@@ -40,8 +40,10 @@ export interface BookCardData {
 
 export interface BookDetails {
   key: string;
+  author: string;
   description: string;
   url: string;
+  publish_date: string;
 }
 
 export interface BookExcerpts {

@@ -1,1 +1,1 @@
-export { ContainerUI } from "./container.ui";
+export { ContainerUI } from "./container.component";
