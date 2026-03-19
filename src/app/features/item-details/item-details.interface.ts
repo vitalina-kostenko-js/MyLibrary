@@ -2,7 +2,7 @@ import {
   BookCardData,
   BookDetails,
   BookFromWork,
-} from "../../../../shared/interfaces";
+} from "../../shared/interfaces";
 
 export interface ItemPageData {
   book: BookFromWork;
@@ -10,4 +10,9 @@ export interface ItemPageData {
   cleanDescription: string;
   cardData: BookCardData;
   details: BookDetails;
+}
+
+export interface ItemPageProps {
+  params: Promise<{ locale: string; id: string }>;
+  searchParams?: Promise<{ year?: string }>;
 }
