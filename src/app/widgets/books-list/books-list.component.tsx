@@ -55,7 +55,7 @@ export const BooksListComponent = ({ dataBooks, subject, page }: BooksListCompon
           paginatedData.map((book: BookFromList) => (
             <div key={book.key} className="min-h-0" data-testid="item-card">
               <Link
-                href={`/${locale}/items/${getBookId(book.key)}`}
+                href={`/${locale}/items/${getBookId(book.key)}?year=${book.first_publish_year ?? ''}`}
                 className="block h-full"
               >
                 <CardHorizontal

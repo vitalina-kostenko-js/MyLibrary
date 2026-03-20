@@ -1,7 +1,12 @@
-import { getBookDetails } from "../../entities/api/books-api";
+import {
+  getBookDetails,
+  getPreferredEditionId,
+  getWorkDetails,
+} from "../../entities/api/books-api";
 import {
   BookCardData,
   BookExcerpts,
+  BookFromList,
   BookFromWork,
 } from "../../shared/interfaces";
 import { getImageCover } from "../../widgets/books-list";
@@ -35,15 +40,40 @@ export const mapToBookCard = async (
   };
 };
 
+const editionDetailsFromWork = (book: BookFromWork): BookFromList => ({
+  key: book.key,
+  title: book.title,
+  authors: book.authors ?? [],
+  subjects: book.subjects ?? [],
+  languages: [],
+  number_of_pages: 0,
+  publishers: [],
+});
+
 export const getItemPageData = async (
   id: string,
+  editionId?: string | null,
   yearFromList?: string | null,
 ): Promise<ItemPageData | null> => {
-  let book: BookFromWork;
-  try {
-    book = await getBookDetails(id);
-  } catch {
-    return null;
+  const hasExplicitEdition = Boolean(editionId?.trim());
+  const [book, preferredEditionId] = await Promise.all([
+    getWorkDetails(id),
+    hasExplicitEdition
+      ? Promise.resolve<string | null>(null)
+      : getPreferredEditionId(id, yearFromList ?? null),
+  ]);
+
+  let bookDetails: BookFromList;
+  if (editionId?.trim()) {
+    bookDetails = await getBookDetails(editionId.trim());
+  } else if (preferredEditionId) {
+    try {
+      bookDetails = await getBookDetails(preferredEditionId);
+    } catch {
+      bookDetails = editionDetailsFromWork(book);
+    }
+  } else {
+    bookDetails = editionDetailsFromWork(book);
   }
   const coverImage = getImageCover(book.cover_id ?? book.covers?.[0] ?? 0);
 
@@ -65,12 +95,23 @@ export const getItemPageData = async (
         ? String(book.first_publish_year)
         : (book.first_publish_date ?? new Date().getFullYear().toString())),
   };
+
+  const editionDetails = {
+    key: bookDetails.key,
+    title: bookDetails.title,
+    authors: bookDetails.authors,
+    subjects: bookDetails.subjects,
+    languages: bookDetails.languages ?? [],
+    number_of_pages: bookDetails.number_of_pages ?? 0,
+    publishers: bookDetails.publishers ?? [],
+  }
   return {
     book,
     coverImageUrl: coverImage,
     cleanDescription,
     cardData,
     details,
+    editionDetails
   };
 };
 
@@ -94,7 +135,7 @@ export const getBookExcerpts = async (
       }) => {
         const authorKey = e.author?.key;
         const author =
-          typeof authorKey === "string" ? await getAuthorName(workKey) : "";
+          typeof authorKey === "string" ? await getAuthorName(authorKey) : "";
         return {
           excerpt: e.value ?? e.excerpt ?? "",
           comment: e.comment ?? "",

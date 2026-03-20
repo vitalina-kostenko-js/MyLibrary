@@ -1,6 +1,7 @@
 import {
   BookCardData,
   BookDetails,
+  BookFromList,
   BookFromWork,
 } from "../../shared/interfaces";
 
@@ -10,6 +11,7 @@ export interface ItemPageData {
   cleanDescription: string;
   cardData: BookCardData;
   details: BookDetails;
+  editionDetails: BookFromList;
 }
 
 export interface ItemPageProps {

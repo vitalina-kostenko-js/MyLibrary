@@ -6,7 +6,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CardDetails } from "../../../../shared/ui/card-profile";
 import { DashboardLayout } from "../../../../widgets/dashboard-layout";
-import { getBookExcerpts, getItemPageData, ItemPageProps } from "../../../../features/item-details";
+import {
+  getBookExcerpts,
+  getItemPageData,
+  ItemPageProps,
+} from "../../../../features/item-details";
 
 export async function generateMetadata({
   params,
@@ -17,7 +21,7 @@ export async function generateMetadata({
   const sp = (await searchParams?.catch(() => ({}))) as
     | { year?: string }
     | undefined;
-  const data = await getItemPageData(id, sp?.year);
+  const data = await getItemPageData(id, undefined, sp?.year);
   if (!data) {
     return { title: t("notFound") };
   }
@@ -43,11 +47,11 @@ export default async function ItemPage({
     | { year?: string }
     | undefined;
 
-  const data = await getItemPageData(id, sp?.year);
+  const data = await getItemPageData(id, undefined, sp?.year);
   if (!data) notFound();
 
   const excerpts = await getBookExcerpts(data.book.key);
-  const { book, coverImageUrl, cardData, details } = data;
+  const { book, coverImageUrl, cardData, details, editionDetails } = data;
 
   return (
     <DashboardLayout>
@@ -61,6 +65,7 @@ export default async function ItemPage({
       <CardDetails
         details={details}
         data={cardData}
+        editionDetails={editionDetails}
         media={
           <Image
             src={coverImageUrl}

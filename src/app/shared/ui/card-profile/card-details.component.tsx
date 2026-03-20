@@ -2,9 +2,10 @@
 import {
   Card,
   CardContent,
+  CardDescription,
   CardTitle,
 } from "@/components/ui/card";
-import { BookCardData, BookDetails, BookExcerpts } from "../../interfaces";
+import { BookCardData, BookDetails, BookExcerpts, BookFromList } from "../../interfaces";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
@@ -14,16 +15,18 @@ interface CardDetalisProps {
   children?: React.ReactNode;
   media: React.ReactNode;
   excerpts: BookExcerpts[];
+  editionDetails: BookFromList;
 }
 
-export const CardDetails = ({ details, data, children, media, excerpts }: CardDetalisProps) => {
+export const CardDetails = ({ details, data, children, media, excerpts, editionDetails }: CardDetalisProps) => {
   const t = useTranslations("book");
   const [isExpanded, setIsExpanded] = useState(false);
   const { description, publish_date } = details;
   const { title, author, subjects } = data;
+  const { languages, number_of_pages, publishers } = editionDetails;
 
   return (
-    <Card className="w-full transition-colors duration-200 hover:bg-accent/50 p-6">
+    <Card className="w-full transition-colors duration-200 p-6">
       {/* book cover and information */}
       <div className="flex flex-col md:flex-row gap-8 mb-10">
         <div className="flex-shrink-0 flex justify-center">
@@ -35,6 +38,7 @@ export const CardDetails = ({ details, data, children, media, excerpts }: CardDe
         {/* book information */}
         <div className="flex flex-col gap-4 flex-1">
           <CardTitle className="text-3xl font-bold">{title}</CardTitle>
+          <CardDescription>Publishers: {publishers?.join(', ')}</CardDescription>
           <div>
             <span className="font-semibold">{t("description")}: </span>
             <span>{description || "—"}</span>
@@ -50,7 +54,9 @@ export const CardDetails = ({ details, data, children, media, excerpts }: CardDe
             </button>
           </div>
           <div className="mt-auto pt-4 border-t italic text-sm text-muted-foreground">
-            {t("year")}: {publish_date}
+            <div>{t("year")}: {publish_date}</div>
+            <div>Languages: {languages?.join(', ')}</div>
+            <div>Number of pages: {number_of_pages}</div>
           </div>
         </div>
       </div>

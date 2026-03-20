@@ -15,6 +15,9 @@ export interface BookBase {
 export interface BookFromList extends BookBase {
   cover_id?: number;
   first_publish_year?: number;
+  languages?: string[];
+  number_of_pages?: number;
+  publishers?: string[];
 }
 
 export interface BookFromWork extends BookBase {
