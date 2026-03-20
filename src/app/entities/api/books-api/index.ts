@@ -1,1 +1,6 @@
-export { getBooksBySubject, getBookDetails } from './books.api';
+export {
+  getWorkDetails,
+  getBooksBySubject,
+  getBookDetails,
+  getPreferredEditionId,
+} from "./books.api";
