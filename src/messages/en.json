@@ -12,6 +12,7 @@
   "navigation": {
     "books": "Books",
     "home": "Home",
+    "about": "About",
     "backToList": "Back to list"
   },
   "form_register": {
@@ -76,6 +77,10 @@
     "title": "Page Not Found",
     "description": "We couldn't find the page you are looking for",
     "backToHome": "Back to home page"
+  },
+  "about": {
+    "title": "About MyLibrary",
+    "description": "MyLibrary is a library management application where you can browse books, view details, and manage your reading list. The app supports multiple languages (English and German) and uses Open Library API for book data."
   },
   "home": {
     "title": "Welcome to Book Library",

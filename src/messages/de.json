@@ -12,6 +12,7 @@
   "navigation": {
     "books": "Bücher",
     "home": "Startseite",
+    "about": "Über uns",
     "backToList": "Zurück zur Liste"
   },
   "form_register": {
@@ -75,6 +76,10 @@
     "title": "Seite nicht gefunden",
     "description": "Wir konnten die Seite nicht finden",
     "backToHome": "Zurück zur Startseite"
+  },
+  "about": {
+    "title": "Über MyLibrary",
+    "description": "MyLibrary ist eine Bibliotheksanwendung, in der Sie Bücher durchsuchen, Details anzeigen und Ihre Leseliste verwalten können. Die App unterstützt mehrere Sprachen (Englisch und Deutsch) und nutzt die Open Library API für Buchdaten."
   },
   "home": {
     "title": "Willkommen bei der Buchbibliothek",
