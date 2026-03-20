@@ -16,6 +16,21 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  /** Avoid mixed-content (HTTPS page requesting HTTP) on production deploys. */
+  async headers() {
+    if (process.env.NODE_ENV !== "production") return [];
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: "upgrade-insecure-requests",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

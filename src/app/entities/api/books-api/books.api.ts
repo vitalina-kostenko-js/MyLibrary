@@ -1,3 +1,4 @@
+import { ensureHttpsUrl } from "../../../shared/lib/ensure-https";
 import { BookFromList, BookFromWork } from "../../../shared/interfaces";
 
 const DEFAULT_WORKS_LIMIT = 100;
@@ -7,7 +8,9 @@ export const getBooksBySubject = async (
   limit: number = DEFAULT_WORKS_LIMIT,
 ): Promise<BookFromList[]> => {
   const response = await fetch(
-    `https://openlibrary.org/subjects/${subject}.json?limit=${limit}`,
+    ensureHttpsUrl(
+      `https://openlibrary.org/subjects/${subject}.json?limit=${limit}`,
+    ),
     { next: { revalidate: 3600 } },
   );
   if (!response.ok)
@@ -43,7 +46,7 @@ export const getBooksBySubject = async (
 };
 
 export const getWorkDetails = async (key: string): Promise<BookFromWork> => {
-  const response = await fetch(`https://openlibrary.org/works/${key}.json`, {
+  const response = await fetch(ensureHttpsUrl(`https://openlibrary.org/works/${key}.json`), {
     cache: "no-store",
   });
   if (!response.ok)
@@ -77,7 +80,9 @@ export const getPreferredEditionId = async (
   preferredYear?: string | null,
 ): Promise<string | null> => {
   const response = await fetch(
-    `https://openlibrary.org/works/${workId}/editions.json?limit=100`,
+    ensureHttpsUrl(
+      `https://openlibrary.org/works/${workId}/editions.json?limit=100`,
+    ),
     { cache: "no-store" },
   );
   if (!response.ok) return null;
@@ -123,9 +128,12 @@ export const getPreferredEditionId = async (
 };
 
 export const getBookDetails = async (edition: string): Promise<BookFromList> => {
-  const response = await fetch(`https://openlibrary.org/books/${edition}.json`, {
-    cache: "no-store",
-  });
+  const response = await fetch(
+    ensureHttpsUrl(`https://openlibrary.org/books/${edition}.json`),
+    {
+      cache: "no-store",
+    },
+  );
   if (!response.ok)
     throw new Error(
       `Failed to fetch book details for key "${edition}" - ${response.status}`,

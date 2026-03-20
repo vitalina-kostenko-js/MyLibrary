@@ -4,6 +4,10 @@ import {
   getWorkDetails,
 } from "../../entities/api/books-api";
 import {
+  ensureHttpsUrl,
+  openLibraryJsonUrl,
+} from "../../shared/lib/ensure-https";
+import {
   BookCardData,
   BookExcerpts,
   BookFromList,
@@ -16,14 +20,14 @@ const getWorkId = (key: string) => key.split("/").filter(Boolean).pop() ?? key;
 
 export const getAuthorName = async (workKey: string): Promise<string> => {
   const workId = getWorkId(workKey);
-  const response = await fetch(`https://openlibrary.org/works/${workId}.json`);
+  const response = await fetch(
+    ensureHttpsUrl(`https://openlibrary.org/works/${workId}.json`),
+  );
   if (!response.ok) return "";
   const data = await response.json();
   const authorKey = data.authors?.[0]?.author?.key ?? data.authors?.[0]?.key;
   if (!authorKey || typeof authorKey !== "string") return "";
-  const authorResponse = await fetch(
-    `https://openlibrary.org${authorKey}.json`,
-  );
+  const authorResponse = await fetch(openLibraryJsonUrl(authorKey));
   if (!authorResponse.ok) return "";
   const authorData = await authorResponse.json();
   return authorData?.name ?? "";
@@ -88,7 +92,7 @@ export const getItemPageData = async (
     key: book.key,
     author: cardData.author,
     description: cleanDescription,
-    url: book.url ?? "",
+    url: book.url ? ensureHttpsUrl(book.url) : "",
     publish_date:
       yearFromList ??
       (book.first_publish_year != null
@@ -119,7 +123,9 @@ export const getBookExcerpts = async (
   workKey: string,
 ): Promise<BookExcerpts[]> => {
   const workId = getWorkId(workKey);
-  const response = await fetch(`https://openlibrary.org/works/${workId}.json`);
+  const response = await fetch(
+    ensureHttpsUrl(`https://openlibrary.org/works/${workId}.json`),
+  );
   if (!response.ok) return [];
   const data = await response.json();
   const rawExcerpts = data.excerpts ?? [];
