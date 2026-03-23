@@ -4,7 +4,7 @@ import path from "path";
 import dotenv from "dotenv";
 
 dotenv.config({ path: path.resolve(process.cwd(), 'src/config/env/.env.local') });
-const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
+const withNextIntl = createNextIntlPlugin("./src/pkg/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   images: {

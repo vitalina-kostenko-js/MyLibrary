@@ -87,7 +87,7 @@
     "welcomeDescription": "Willkommen in der Bibliothek",
     "description": "Um die Bibliothek zu betrachten und Bücher zu erkunden, müssen Sie ein Konto erstellen oder sich anmelden.",
     "signIn": "Anmelden",
-    "createAccount": "Konto erstellen",
+    "signUp": "Konto erstellen",
     "viewLibrary": "Bibliothek ansehen"
   }
 }

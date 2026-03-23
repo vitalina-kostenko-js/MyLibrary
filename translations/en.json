@@ -88,7 +88,7 @@
     "welcomeDescription": "Welcome to the library",
     "description": "To view the library and explore books you need to create an account or sign in.",
     "signIn": "Sign in",
-    "createAccount": "Create account",
+    "signUp": "Create account",
     "viewLibrary": "View Library"
   }
 }
