@@ -3,29 +3,26 @@
   "style": "new-york",
   "rsc": true,
   "tsx": true,
-  "registries": {
-    "@shadcnstore": {
-      "url": "https://shadcnstore.com/r/{name}.json"
-    },
-    "@ss-components": {
-      "url": "https://shadcnstudio.com/r/{name}.json"
-    },
-    "@ss-blocks": {
-      "url": "https://shadcnstudio.com/r/{name}.json"
-    }
-  },
   "tailwind": {
-    "config": "tailwind.config.ts",
-    "css": "src/app/(web)/globals.css",
+    "config": "",
+    "css": "src/config/styles/globals.css",
     "baseColor": "neutral",
-    "cssVariables": true
+    "cssVariables": true,
+    "prefix": ""
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@/components",
-    "ui": "@/components/ui",
-    "lib": "@/lib",
-    "utils": "@/lib/utils",
-    "hooks": "@/hooks"
+    "components": "@/pkg/theme/components",
+    "utils": "@/pkg/theme/lib/utils",
+    "ui": "@/pkg/theme/ui",
+    "lib": "@/pkg/theme/lib",
+    "hooks": "@/pkg/theme/hooks"
+  },
+  "registries": {
+    "@shadcn-studio": "https://shadcnstudio.com/r/{name}.json",
+    "@ss-components": "https://shadcnstudio.com/r/components/{name}.json",
+    "@ss-blocks": "https://shadcnstudio.com/r/blocks/{name}.json",
+    "@ss-themes": "https://shadcnstudio.com/r/themes/{name}.json",
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json"
   }
 }
