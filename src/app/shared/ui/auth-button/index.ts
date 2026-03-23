@@ -1,0 +1,1 @@
+export { LoginButton, RegisterButton } from "./auth-button.component";

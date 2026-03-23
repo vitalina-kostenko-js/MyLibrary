@@ -1,4 +1,3 @@
-import { ensureHttpsUrl } from "../../shared/lib/ensure-https";
 import { Author, Book, BookCardData } from "../../shared/interfaces";
 
 export const getAuthors = (authors: Author[]): string => {
@@ -12,12 +11,4 @@ export const mapToBookCard = (book: Book): BookCardData => {
     subjects: book.subjects ?? [],
     first_publish_year: book.first_publish_year ?? 0,
   };
-};
-
-export const getImageCover = (cover_id: number): string => {
-  return cover_id
-    ? ensureHttpsUrl(
-        `https://covers.openlibrary.org/b/id/${cover_id}-L.jpg`,
-      )
-    : "/No-Cover-Image-01.png";
 };

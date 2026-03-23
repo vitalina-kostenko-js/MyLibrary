@@ -54,7 +54,7 @@ export default async function ItemPage({
   const { book, coverImageUrl, cardData, details, editionDetails } = data;
 
   return (
-    <DashboardLayout>
+    <>
       <div className="pb-2">
         <Link href={`/${locale}/items`}>
           <button className="inline-flex items-center gap-1 cursor-pointer">
@@ -76,6 +76,6 @@ export default async function ItemPage({
         }
         excerpts={excerpts}
       />
-    </DashboardLayout>
+    </>
   );
 }

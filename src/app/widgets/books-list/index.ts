@@ -1,2 +1,2 @@
 export { BooksListComponent } from "./books-list.component";
-export { getAuthors, mapToBookCard, getImageCover } from "./book-list.service";
+export { getAuthors, mapToBookCard } from "./book-list.service";

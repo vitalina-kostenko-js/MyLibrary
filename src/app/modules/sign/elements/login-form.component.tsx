@@ -1,23 +1,26 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter, useParams } from "next/navigation";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import {
+  loginSchema,
+  type LoginFormValues,
+} from "@/app/features/auth-form/auth-form.schema";
+import { loginUser } from "@/app/features/auth-form/auth-form.service";
+import type { User } from "@/app/shared/store/auth.interface";
+import { useAuthStore } from "@/app/shared/store/auth.store";
+import { Button } from "@/src/pkg/theme/ui/button";
 import {
   Form,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/src/pkg/theme/ui/form";
+import { Input } from "@/src/pkg/theme/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { getSession } from "next-auth/react";
-import { loginSchema, type LoginFormValues } from "./auth-form.schema";
-import { loginUser } from "./auth-form.service";
-import { useAuthStore } from "@/app/shared/store/auth.store";
-import type { User } from "@/app/shared/store/auth.interface";
 import { useTranslations } from "next-intl";
+import { useParams, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 export function LoginForm() {
   const t = useTranslations("form_login");
@@ -82,7 +85,11 @@ export function LoginForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("password")}</FormLabel>
-              <Input type="password" placeholder={t("enterPassword")} {...field} />
+              <Input
+                type="password"
+                placeholder={t("enterPassword")}
+                {...field}
+              />
               <FormMessage />
             </FormItem>
           )}

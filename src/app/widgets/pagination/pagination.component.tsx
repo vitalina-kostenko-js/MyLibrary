@@ -1,4 +1,5 @@
-import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/src/pkg/lib/utils/utils";
+import { buttonVariants } from "@/src/pkg/theme/ui/button";
 import {
   Pagination,
   PaginationContent,
@@ -6,8 +7,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
-import { cn } from "@/lib/utils";
+} from "@/src/pkg/theme/ui/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface PaginationWithSecondaryProps {

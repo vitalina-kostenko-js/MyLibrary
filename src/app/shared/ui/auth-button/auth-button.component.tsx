@@ -1,9 +1,9 @@
 "use client";
 
+import { Button } from "@/src/pkg/theme/ui/button";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Button } from "../../../../components/ui/button";
-import { useTranslations } from "next-intl";
 
 export const LoginButton = () => {
   const t = useTranslations("auth_button");
@@ -12,7 +12,7 @@ export const LoginButton = () => {
 
   return (
     <Button variant="ghost" size="default" asChild>
-      <Link href={`/${locale}/login`}>{t("login")}</Link>
+      <Link href={`/${locale}/sign-in`}>{t("login")}</Link>
     </Button>
   );
 };
@@ -24,7 +24,7 @@ export const RegisterButton = () => {
 
   return (
     <Button variant="ghost" size="default" asChild>
-      <Link href={`/${locale}/register`}>{t("register")}</Link>
+      <Link href={`/${locale}/sign-up`}>{t("register")}</Link>
     </Button>
   );
 };

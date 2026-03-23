@@ -13,7 +13,7 @@ import {
   BookFromList,
   BookFromWork,
 } from "../../shared/interfaces";
-import { getImageCover } from "../../widgets/books-list";
+import { getImageCover } from "../../shared/lib/books";
 import { ItemPageData } from "./item-details.interface";
 
 const getWorkId = (key: string) => key.split("/").filter(Boolean).pop() ?? key;

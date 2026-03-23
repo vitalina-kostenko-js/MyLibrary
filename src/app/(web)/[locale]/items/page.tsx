@@ -1,40 +1,19 @@
-import { QueryClient } from "@tanstack/react-query";
-import { dehydrate } from "@tanstack/react-query";
-import { getBooksBySubject } from "../../../entities/api";
-import { DashboardLayout } from "../../../widgets/dashboard-layout";
-import { BooksListComponent } from "../../../widgets/books-list";
-import { ReactQueryHydration } from "../../../shared/providers";
+import { ReactQueryHydration } from "@/app/shared/providers";
+import { BooksListComponent } from "@/app/widgets/books-list";
+import { getPageFromSearchParams } from "@/app/shared/lib";
+import { getDehydratedBooksState, ItemsPageProps } from "@/app/modules/book-catalog";
 
-const LIST_QUERY_KEY = ["booksBySubject", "science_fiction"] as const;
-
-interface ItemsPageProps {
-  searchParams?: Promise<{ page: number }>;
-}
+const SUBJECT = "science_fiction";
 
 export default async function ItemsPage({ searchParams }: ItemsPageProps) {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: LIST_QUERY_KEY,
-    queryFn: () => getBooksBySubject("science_fiction"),
-  });
-
-  const dehydratedState = dehydrate(queryClient);
+  const dehydratedState = await getDehydratedBooksState(SUBJECT);
 
   const sp = await searchParams?.catch(() => ({}));
-  const pageParam = (sp as { page: number })?.page;
-  const pageNumber =
-    pageParam === undefined
-      ? 1
-      : Math.max(1, parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam, 10) || 1);
+  const pageNumber = getPageFromSearchParams(sp as Record<string, string | string[] | undefined>);
 
   return (
     <ReactQueryHydration state={dehydratedState}>
-      <div>
-        <DashboardLayout>
-          <BooksListComponent subject="science_fiction" page={pageNumber} />
-        </DashboardLayout>
-      </div>
+      <BooksListComponent subject={SUBJECT} page={pageNumber} />
     </ReactQueryHydration>
   );
 }

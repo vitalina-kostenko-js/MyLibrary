@@ -1,12 +1,12 @@
+import { Link } from "@/src/pkg/i18n/navigation";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
-import { Link } from "@/src/i18n/navigation";
+} from "@/src/pkg/theme/ui/breadcrumb";
+import { Button } from "@/src/pkg/theme/ui/button";
 import { LanguagesIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { LanguageDropdown } from "../../../shared/ui/dropdown-language";

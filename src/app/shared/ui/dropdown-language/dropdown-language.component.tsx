@@ -3,14 +3,14 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 
+import { usePathname, useRouter } from "@/src/pkg/i18n/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { usePathname, useRouter } from "@/src/i18n/navigation";
+} from "@/src/pkg/theme/ui/dropdown-menu";
 import { useLocale } from "next-intl";
 import { useRouter as useNextRouter } from "next/navigation";
 

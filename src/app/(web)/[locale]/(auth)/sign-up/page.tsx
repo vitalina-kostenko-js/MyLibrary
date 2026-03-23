@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { RegisterForm } from "../../../features/auth-form";
+import { RegisterForm } from "@/app/modules/sign/elements";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sign up | MyLibrary",
+  description: "Sign up to create your account to access your library",
+};
 
 interface Props { params: Promise<{ locale: string }> };
 
@@ -14,7 +20,7 @@ export default async function RegisterPage({ params }: Props) {
       <RegisterForm />
       <p className="text-muted-foreground text-sm">
         {tRegister("alreadyHaveAccount")}{" "}
-        <Link href={`/${locale}/login`} className="text-primary underline-offset-4 hover:underline">
+        <Link href={`/${locale}/sign-in`} className="text-primary underline-offset-4 hover:underline">
           {tLogin("login")}
         </Link>
       </p>

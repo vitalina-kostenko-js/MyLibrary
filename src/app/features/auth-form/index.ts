@@ -1,8 +1,9 @@
-export {LoginForm} from "./login-form.component";
-export {RegisterForm} from "./register-form.component";
+export {
+  loginSchema,
+  registerSchema,
+  type LoginFormValues,
+  type RegisterFormValues,
+} from "@/app/features/auth-form/auth-form.schema";
 
-export { loginSchema, registerSchema, type LoginFormValues, type RegisterFormValues } from "./auth-form.schema";
-
-export { registerUser, loginUser } from "./auth-form.service";
-export { LoginButton, RegisterButton } from "./auth-button.component";
-
+export { LoginButton, RegisterButton } from "@/app/shared/ui/auth-button";
+export { loginUser, registerUser } from "@/app/features/auth-form/auth-form.service";

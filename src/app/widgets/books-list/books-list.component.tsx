@@ -5,11 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
-import { getImageCover, mapToBookCard } from ".";
-import { useBooksBySubject } from "../../shared/hooks";
+import { useBooksBySubject } from "@/app/entities/api/books-api";
 import { BookFromList } from "../../shared/interfaces";
 import { CardHorizontal } from "../../shared/ui/card-horizontal";
 import { PaginationComponent } from "../pagination";
+import { getImageCover } from "../../shared/lib/books";
+import { mapToBookCard } from "./book-list.service";
 
 interface BooksListComponentProps {
   dataBooks?: BookFromList[];
@@ -59,7 +60,7 @@ export const BooksListComponent = ({ dataBooks, subject, page }: BooksListCompon
                 className="block h-full"
               >
                 <CardHorizontal
-                  data={mapToBookCard(book)}
+                  data={mapToBookCard(book)}    
                   media={
                     book.cover_id ? (
                       <div className="relative w-[120px] h-[180px]">

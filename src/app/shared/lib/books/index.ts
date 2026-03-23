@@ -1,0 +1,1 @@
+export { getImageCover } from "./cover-url";

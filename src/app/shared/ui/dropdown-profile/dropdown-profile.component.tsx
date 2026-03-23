@@ -1,16 +1,16 @@
 "use client";
+import { useAuthStore } from "@/app/shared/store/auth.store";
+import { LoginButton, RegisterButton } from "@/app/shared/ui/auth-button";
+import { signOut, useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
-import { ProfileMenuContent } from "./profile-menu-content.component";
-import { Button } from "../../../../../components/ui/button";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "../../../../../components/ui/avatar";
-import { LoginButton, RegisterButton } from "../../../features/auth-form";
-import { useAuthStore } from "@/app/shared/store/auth.store";
-import { useTranslations } from "next-intl";
+} from "../../../../pkg/theme/ui/avatar";
+import { Button } from "../../../../pkg/theme/ui/button";
+import { ProfileMenuContent } from "./profile-menu-content.component";
 
 const ProfileDropdown = () => {
   const tLoading = useTranslations("loading");

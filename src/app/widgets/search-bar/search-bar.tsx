@@ -2,7 +2,7 @@
 
 import { SearchIcon } from "lucide-react";
 
-import { Input } from "@/components/ui/input";
+import { Input } from "@/src/pkg/theme/ui/input";
 import { useParams, useRouter } from "next/navigation";
 import { useId } from "react";
 import { useSearch } from "../../shared/hooks/useSearch.hook";

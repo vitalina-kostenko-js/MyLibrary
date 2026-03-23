@@ -4,10 +4,15 @@ import {
   CardContent,
   CardDescription,
   CardTitle,
-} from "@/components/ui/card";
-import { BookCardData, BookDetails, BookExcerpts, BookFromList } from "../../interfaces";
+} from "@/src/pkg/theme/ui/card";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import {
+  BookCardData,
+  BookDetails,
+  BookExcerpts,
+  BookFromList,
+} from "../../interfaces";
 
 interface CardDetalisProps {
   details: BookDetails;
@@ -18,7 +23,14 @@ interface CardDetalisProps {
   editionDetails: BookFromList;
 }
 
-export const CardDetails = ({ details, data, children, media, excerpts, editionDetails }: CardDetalisProps) => {
+export const CardDetails = ({
+  details,
+  data,
+  children,
+  media,
+  excerpts,
+  editionDetails,
+}: CardDetalisProps) => {
   const t = useTranslations("book");
   const [isExpanded, setIsExpanded] = useState(false);
   const { description, publish_date } = details;
@@ -38,7 +50,9 @@ export const CardDetails = ({ details, data, children, media, excerpts, editionD
         {/* book information */}
         <div className="flex flex-col gap-4 flex-1">
           <CardTitle className="text-3xl font-bold">{title}</CardTitle>
-          <CardDescription>Publishers: {publishers?.join(', ')}</CardDescription>
+          <CardDescription>
+            Publishers: {publishers?.join(", ")}
+          </CardDescription>
           <div>
             <span className="font-semibold">{t("description")}: </span>
             <span>{description || "—"}</span>
@@ -48,20 +62,29 @@ export const CardDetails = ({ details, data, children, media, excerpts, editionD
             <span>{author || "—"}</span>
           </div>
           <div>
-            <div className={isExpanded ? "" : "line-clamp-3 text-muted-foreground"}>{subjects}</div>
-            <button onClick={() => setIsExpanded(!isExpanded)} className="mt-2 text-sm text-primary font-semibold hover:underline">
+            <div
+              className={isExpanded ? "" : "line-clamp-3 text-muted-foreground"}
+            >
+              {subjects}
+            </div>
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="mt-2 text-sm text-primary font-semibold hover:underline"
+            >
               {isExpanded ? "Collapse" : "Read more"}
             </button>
           </div>
           <div className="mt-auto pt-4 border-t italic text-sm text-muted-foreground">
-            <div>{t("year")}: {publish_date}</div>
-            <div>Languages: {languages?.join(', ')}</div>
+            <div>
+              {t("year")}: {publish_date}
+            </div>
+            <div>Languages: {languages?.join(", ")}</div>
             <div>Number of pages: {number_of_pages}</div>
           </div>
         </div>
       </div>
 
-    {/* fragments book */}
+      {/* fragments book */}
       <div className="flex flex-col items-center justify-center w-full border-t pt-10">
         <h3 className="text-xl font-bold mb-6">Text fragments</h3>
         <Card className="w-full max-w-3xl bg-secondary/20">
@@ -71,7 +94,9 @@ export const CardDetails = ({ details, data, children, media, excerpts, editionD
                 <blockquote className="text-lg italic font-medium leading-relaxed">
                   &quot;{excerpt.excerpt}&quot;
                 </blockquote>
-                <div className="text-sm text-muted-foreground">{excerpt.comment}</div>
+                <div className="text-sm text-muted-foreground">
+                  {excerpt.comment}
+                </div>
                 <div className="font-semibold">— {excerpt.author}</div>
               </div>
             ))}

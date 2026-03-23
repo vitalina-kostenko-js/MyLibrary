@@ -6,11 +6,15 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/src/pkg/theme/ui/card";
 
-import type { BookCardData } from "../../interfaces";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/src/pkg/theme/ui/hover-card";
 import { useTranslations } from "next-intl";
+import type { BookCardData } from "../../interfaces";
 
 interface CardHorizontalProps {
   data: BookCardData;
@@ -18,7 +22,11 @@ interface CardHorizontalProps {
   children?: React.ReactNode;
 }
 
-export const CardHorizontal = ({ data, media, children }: CardHorizontalProps) => {
+export const CardHorizontal = ({
+  data,
+  media,
+  children,
+}: CardHorizontalProps) => {
   const t = useTranslations("book");
   const { title, author, subjects, first_publish_year } = data;
 
@@ -57,7 +65,9 @@ export const CardHorizontal = ({ data, media, children }: CardHorizontalProps) =
               t("noGenreFound")
             )}
           </CardDescription>
-          <CardDescription>{first_publish_year > 0 ? first_publish_year : " —"}</CardDescription>
+          <CardDescription>
+            {first_publish_year > 0 ? first_publish_year : " —"}
+          </CardDescription>
         </CardHeader>
         <CardContent className="gap-3 py-6 Archivo Black, sans-serif">
           {children}

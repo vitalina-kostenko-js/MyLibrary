@@ -1,20 +1,23 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter, useParams } from "next/navigation";
-import { registerSchema, RegisterFormValues } from "./auth-form.schema";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import {
+  RegisterFormValues,
+  registerSchema,
+} from "@/app/features/auth-form/auth-form.schema";
+import { registerUser } from "@/app/features/auth-form/auth-form.service";
+import { Button } from "@/src/pkg/theme/ui/button";
 import {
   Form,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { registerUser } from "./auth-form.service";
+} from "@/src/pkg/theme/ui/form";
+import { Input } from "@/src/pkg/theme/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
+import { useParams, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 export function RegisterForm() {
   const t = useTranslations("form_register");
@@ -78,7 +81,11 @@ export function RegisterForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("password")}</FormLabel>
-              <Input type="password" placeholder={t("enterPassword")} {...field} />
+              <Input
+                type="password"
+                placeholder={t("enterPassword")}
+                {...field}
+              />
               <FormMessage />
             </FormItem>
           )}
