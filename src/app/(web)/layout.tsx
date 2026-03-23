@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { ReactQueryProvider } from "../shared/providers";
-import "../(web)/globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-import { routing } from "../../i18n/routing";
-import { AuthSessionProvider } from "../shared/providers";
+import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
+import "@/config/styles/globals.css";  
+import { routing } from "../../pkg/i18n/routing";
+import { AuthSessionProvider, ReactQueryProvider } from "../shared/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +27,7 @@ export const metadata: Metadata = {
 };
 
 export function generateStaticParams() {
-  return routing.locales.map((locale) => ({locale}));
+  return routing.locales.map((locale) => ({ locale }));
 }
 
 export default async function RootLayout({
