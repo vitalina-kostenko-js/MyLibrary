@@ -13,22 +13,22 @@
 
 Сторінка входу: Зареєстровані користувачі можуть увійти, використовуючи свій Email та пароль.
 
-<img src="assets/login-page.png" alt="Сторінка входу в систему" width="600">
+<img src="src/app/shared/assets/image/login-page.png" alt="Сторінка входу в систему" width="600">
 
 Реєстрація: Нові користувачі можуть створити обліковий запис, заповнивши просту форму.
 
 
-<img src="assets/register-page.png" alt="Сторінка реєстрації" width="600">
+<img src="src/app/shared/assets/image/register-page.png" alt="Сторінка реєстрації" width="600">
 
 Стартова сторінка: Користувачі, які не увійшли в систему, бачать вітальне вікно з пропозицією авторизуватися.
 
 
-<img src="assets/home-page.png" alt="Стартова сторінка для неавторизованих користувачів" width="600">
+<img src="src/app/shared/assets/image/home-page.png" alt="Стартова сторінка для неавторизованих користувачів" width="600">
 
 Вітання користувача: Після успішного входу додаток вітає користувача персоналізованим повідомленням.
 
 
-<img src="assets/home-page-with-login.png" alt="Персоналізоване вітання після входу" width="600">
+<img src="src/app/shared/assets/image/home-page-with-login.png" alt="Персоналізоване вітання після входу" width="600">
 
 ### 📚 Book Library
 
@@ -42,12 +42,12 @@
 Головна сторінка бібліотеки: Відображає список книг у вигляді карток. Реалізовано зручну навігацію та пагінацію для перегляду великої кількості книг.
 
 
-<img src="assets/items-page.png" alt="Сторінка бібліотеки з карточками книг" width="800">
+<img src="src/app/shared/assets/image/items-page.png" alt="Сторінка бібліотеки з карточками книг" width="800">
 
 Детальна інформацію про книгу: Користувач може натиснути на книгу, щоб відкрити сторінку з детальним описом, автором, жанром та роком видання.
 
 
-<img src="assets/profile-book.png" alt="Сторінка з детальною інформацією про книгу" width="800">
+<img src="src/app/shared/assets/image/profile-book.png" alt="Сторінка з детальною інформацією про книгу" width="800">
 
 ### 🌍 Internationalization (i18n)
 
@@ -128,18 +128,23 @@ http://localhost:3000
 # 📁 Project Structure
 
 ```
-app/
- ├ [locale]/
- │   ├ items/
- │   ├ auth/
- │   └ layout.tsx
- │
-shared/
- ├ hooks
- ├ services
- ├ interfaces
- ├ utils
- └ ui
+src/
+├── app/
+│   ├── (web)/                    # маршрутизація Next.js
+│   │   ├── layout.tsx
+│   │   ├── not-found.tsx
+│   │   └── [locale]/
+│   │       ├── (auth)/           # sign-in, sign-up
+│   │       ├── (public)/         # головна для гостей
+│   │       ├── items/            # каталог, пошук, деталі книги
+│   │       └── ...
+│   ├── modules/                  # складені екрани / сторінкова логіка
+│   ├── widgets/                  # самодостатні блоки UI
+│   ├── features/                 # фічі (auth-form, item-details, …)
+│   ├── entities/                 # API, інтеграції (books-api, auth, …)
+│   └── shared/                   # ui, hooks, lib, store, interfaces, providers, assets, …
+├── config/                       # env, styles, …
+└── pkg/                          # i18n, (theme/ui за потреби)
 ```
 
 ---
