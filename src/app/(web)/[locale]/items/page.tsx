@@ -1,11 +1,11 @@
 import { ReactQueryHydration } from "@/app/shared/providers";
 import { BooksListComponent } from "@/app/widgets/books-list";
 import { getPageFromSearchParams } from "@/app/shared/lib";
-import { getDehydratedBooksState, ItemsPageProps } from "@/app/modules/book-catalog";
+import { getDehydratedBooksState, IItemsPageProps } from "@/app/modules/book-catalog";
 
 const SUBJECT = "science_fiction";
 
-export default async function ItemsPage({ searchParams }: ItemsPageProps) {
+export default async function ItemsPage({ searchParams }: IItemsPageProps) {
   const dehydratedState = await getDehydratedBooksState(SUBJECT);
 
   const sp = await searchParams?.catch(() => ({}));
