@@ -1,4 +1,4 @@
-export type { ItemPageData, ItemPageProps } from "./item-details.interface";
+export type { IItemPageData, IItemPageProps } from "./item-details.interface";
 export {
   getAuthorName,
   getBookExcerpts,

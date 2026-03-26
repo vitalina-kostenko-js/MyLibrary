@@ -1,8 +1,10 @@
 import { signIn } from "next-auth/react";
 import { LoginFormValues, RegisterFormValues } from "./auth-form.schema";
 
-export const registerUser = async (values: RegisterFormValues) => {
+export const registerUser = async (values: RegisterFormValues, signal?: AbortSignal) => {
   const res = await fetch("/entities/api/register", {
+    cache: "no-store",
+    signal,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
