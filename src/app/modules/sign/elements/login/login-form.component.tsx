@@ -5,8 +5,7 @@ import {
   type LoginFormValues,
 } from "@/app/features/auth-form/auth-form.schema";
 import { loginUser } from "@/app/features/auth-form/auth-form.service";
-import type { User } from "@/app/shared/store/auth.interface";
-import { useAuthStore } from "@/app/shared/store/auth.store";
+import { useAuthStore, User } from "@/app/shared/store";
 import { Button } from "@/src/pkg/theme/ui/button";
 import {
   Form,
@@ -22,19 +21,21 @@ import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-export function LoginForm() {
+const LoginFormComponent = () => {
   const t = useTranslations("form_login");
   const tSchema = useTranslations("auth_shema");
 
   const router = useRouter();
   const params = useParams();
+
   const locale = (params.locale as string) ?? "en";
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema(tSchema)),
     defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = async (values: LoginFormValues) => {
+  const handleLoginSubmit = async (values: LoginFormValues) => {
     try {
       const res = await loginUser(values);
       if (res?.error) {
@@ -61,12 +62,16 @@ export function LoginForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(handleLoginSubmit)}
+        className="space-y-4"
+      >
         {form.formState.errors.root && (
           <p className="text-destructive text-sm">
             {form.formState.errors.root.message}
           </p>
         )}
+
         <FormField
           control={form.control}
           name="email"
@@ -101,4 +106,6 @@ export function LoginForm() {
       </form>
     </Form>
   );
-}
+};
+
+export default LoginFormComponent;

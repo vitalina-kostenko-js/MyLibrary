@@ -1,19 +1,22 @@
-import type { FC, ReactNode } from "react";
-import { HeaderBar } from "@/app/widgets/dashboard-layout/elements/header-bar.component";
-import { ContainerUI } from "@/app/shared/ui/container";
+import { ContainerComponent } from "@/app/shared/ui/container";
+import { HeaderBarComponent } from "@/app/widgets/dashboard-layout";
+import { ReactNode } from "react";
 
-
-export interface LayoutComponentProps {
+interface ILayoutComponentProps {
   children: ReactNode;
   type: "public" | "protected";
 }
 
-export const LayoutComponent: FC<LayoutComponentProps> = ({ children, type }) => {
+const LayoutComponent = (props: ILayoutComponentProps) => {
+  const { children, type } = props;
+
   return (
     <div className="relative z-0 flex min-h-dvh flex-col">
-      {type === "public" && <HeaderBar />}
+      {type === "public" && <HeaderBarComponent />}
 
-      <ContainerUI>{children}</ContainerUI>
+      <ContainerComponent>{children}</ContainerComponent>
     </div>
   );
 };
+
+export default LayoutComponent;

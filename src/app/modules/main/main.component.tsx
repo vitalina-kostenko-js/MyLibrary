@@ -1,19 +1,21 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { getTranslations } from "next-intl/server";
-import { DashboardLayout } from "@/app/widgets/dashboard-layout";
+import { DashboardLayoutComponent } from "@/app/widgets/dashboard-layout";
 
-interface MainComponentProps {
+interface IMainComponentProps {
   locale: string;
 }
 
-export async function MainComponent({ locale }: MainComponentProps) {
+const MainComponent = async (props: IMainComponentProps) => {
+  const { locale } = props;
+
   const t = await getTranslations("home");
   const session = await getServerSession();
 
   if (session) {
     return (
-      <DashboardLayout>
+      <DashboardLayoutComponent>  
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="max-w-xl space-y-6 text-center">
             <h1 className="text-4xl font-bold">
@@ -28,12 +30,12 @@ export async function MainComponent({ locale }: MainComponentProps) {
             </Link>
           </div>
         </div>
-      </DashboardLayout>
+      </DashboardLayoutComponent>
     );
   }
 
   return (
-    <DashboardLayout>
+    <DashboardLayoutComponent>
       <div className="flex flex-1 flex-col items-center justify-center">
         <div className="max-w-xl space-y-6 text-center">
           <h1 className="text-4xl font-bold">{t("title")}</h1>
@@ -54,6 +56,8 @@ export async function MainComponent({ locale }: MainComponentProps) {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </DashboardLayoutComponent>
   );
 }
+
+export default MainComponent;

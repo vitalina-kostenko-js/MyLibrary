@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
-export default function NotFoundComponent() {
+const NotFoundComponent = () => {
   const t = useTranslations("notFound");
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4 text-center">
@@ -45,3 +45,5 @@ export default function NotFoundComponent() {
     </div>
   );
 }
+
+export default NotFoundComponent;

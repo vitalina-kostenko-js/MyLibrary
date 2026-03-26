@@ -1,10 +1,13 @@
 import { BooksListComponent } from "@/app/widgets/books-list";
-import type { BookCatalogModuleProps } from "./book-catalog.interface";
-import { loadBooksForCatalog } from "./book-catalog.service";
+import { IBookCatalogModuleProps } from "./book-catalog.interface";
+import loadBooksForCatalog from "./book-catalog.service";
 
-export async function BookCatalogModule({ locale, subject }: BookCatalogModuleProps) {
+const BookCatalogModule = async (props: IBookCatalogModuleProps) => {
+  const { locale, subject } = props;
+
   const dataBooks = await loadBooksForCatalog(subject);
   return (
     <BooksListComponent dataBooks={dataBooks} subject={subject} />
   );
 }
+export default BookCatalogModule;

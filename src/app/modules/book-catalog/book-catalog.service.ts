@@ -1,5 +1,7 @@
 import { getBooksBySubject } from "@/app/entities/api/books-api";
 
-export async function loadBooksForCatalog(subject: string) {
+const loadBooksForCatalog = async (subject: string) => {
   return getBooksBySubject(subject);
 }
+
+export default loadBooksForCatalog;

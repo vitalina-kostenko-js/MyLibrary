@@ -19,19 +19,21 @@ import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-export function RegisterForm() {
+const RegisterFormComponent = () => {
   const t = useTranslations("form_register");
   const tSchema = useTranslations("auth_shema");
 
   const router = useRouter();
   const params = useParams();
+
   const locale = (params.locale as string) ?? "en";
+
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema(tSchema)),
     defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
   });
 
-  const onSubmit = async (values: RegisterFormValues) => {
+  const handleRegisterSubmit = async (values: RegisterFormValues) => {
     try {
       await registerUser(values);
       router.push(`/${locale}/login`);
@@ -45,12 +47,13 @@ export function RegisterForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(handleRegisterSubmit)} className="space-y-4">
         {form.formState.errors.root && (
           <p className="text-destructive text-sm">
             {form.formState.errors.root.message}
           </p>
         )}
+
         <FormField
           control={form.control}
           name="name"
@@ -114,3 +117,5 @@ export function RegisterForm() {
     </Form>
   );
 }
+
+export default RegisterFormComponent;

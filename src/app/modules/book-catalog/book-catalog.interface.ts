@@ -1,8 +1,8 @@
-export interface BookCatalogModuleProps {
+export interface IBookCatalogModuleProps {
   locale: string;
   subject: string;
 }
 
-export interface ItemsPageProps {
+export interface IItemsPageProps {
   searchParams?: Promise<{ page: number }>;
 }
