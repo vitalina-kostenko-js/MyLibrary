@@ -7,10 +7,10 @@ import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import { useBooksBySubject } from "@/app/entities/api/books-api";
 import { BookFromList } from "../../shared/interfaces";
-import { CardHorizontal } from "../../shared/ui/card-horizontal";
 import { PaginationComponent } from "../pagination";
 import { getImageCover } from "../../shared/lib/books";
 import { mapToBookCard } from "./book-list.service";
+import { CardHorizontalComponent } from "../../shared/ui/card-horizontal";
 
 interface BooksListComponentProps {
   dataBooks?: BookFromList[];
@@ -59,7 +59,7 @@ export const BooksListComponent = ({ dataBooks, subject, page }: BooksListCompon
                 href={`/${locale}/items/${getBookId(book.key)}?year=${book.first_publish_year ?? ''}`}
                 className="block h-full"
               >
-                <CardHorizontal
+                <CardHorizontalComponent
                   data={mapToBookCard(book)}    
                   media={
                     book.cover_id ? (

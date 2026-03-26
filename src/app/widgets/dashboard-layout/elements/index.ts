@@ -1,1 +1,1 @@
-export { HeaderBar } from "./header-bar.component";
+export { default as HeaderBarComponent } from "./header-bar.component";

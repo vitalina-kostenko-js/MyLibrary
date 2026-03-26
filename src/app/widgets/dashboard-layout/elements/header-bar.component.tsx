@@ -1,3 +1,7 @@
+import {
+  LanguageDropdownComponent,
+  ProfileDropdownComponent,
+} from "@/app/shared/ui";
 import { Link } from "@/src/pkg/i18n/navigation";
 import {
   Breadcrumb,
@@ -9,11 +13,9 @@ import {
 import { Button } from "@/src/pkg/theme/ui/button";
 import { LanguagesIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { LanguageDropdown } from "../../../shared/ui/dropdown-language";
-import { ProfileDropdown } from "../../../shared/ui/dropdown-profile";
-import SearchBar from "../../search-bar/search-bar";
+import SearchBarComponent from "../../search-bar/search-bar.component";
 
-export const HeaderBar = () => {
+const HeaderBarComponent = () => {
   const t = useTranslations("navigation");
 
   return (
@@ -31,18 +33,21 @@ export const HeaderBar = () => {
             </BreadcrumbList>
           </Breadcrumb>
         </div>
+
         <div className="flex items-center gap-1.5">
-          <SearchBar />
-          <LanguageDropdown
+          <SearchBarComponent />
+          <LanguageDropdownComponent
             trigger={
               <Button variant="ghost" size="icon">
                 <LanguagesIcon />
               </Button>
             }
           />
-          <ProfileDropdown />
+          <ProfileDropdownComponent />
         </div>
       </div>
     </header>
   );
 };
+
+export default HeaderBarComponent;

@@ -10,17 +10,15 @@ import {
 } from "@/src/pkg/theme/ui/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-interface PaginationWithSecondaryProps {
+interface IPaginationProps {
   itemsPerPage: number;
   totalItems: number;
   onPageChange?: (page: number) => void;
 }
 
-export const PaginationComponent = ({
-  totalItems,
-  itemsPerPage,
-  onPageChange,
-}: PaginationWithSecondaryProps) => {
+const PaginationComponent = (props: IPaginationProps) => {
+  const { itemsPerPage, totalItems, onPageChange } = props;
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -79,3 +77,5 @@ export const PaginationComponent = ({
     </Pagination>
   );
 };
+
+export default PaginationComponent;

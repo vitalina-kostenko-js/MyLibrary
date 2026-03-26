@@ -7,11 +7,13 @@ import { useParams, useRouter } from "next/navigation";
 import { useId } from "react";
 import { useSearch } from "../../shared/hooks/useSearch.hook";
 
-const SearchBar = () => {
+const SearchBarComponent = () => {
   const router = useRouter();
+  
   const id = useId();
   const { search, setSearch } = useSearch();
   const params = useParams();
+  
   const locale = (params.locale as string) ?? "en";
 
   const handleSearch = () => {
@@ -45,4 +47,4 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar;
+export default SearchBarComponent;
