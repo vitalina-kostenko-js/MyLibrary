@@ -11,11 +11,19 @@ import { ReactNode, useState } from "react";
 interface HydrationProps {
   state: DehydratedState;
   children: ReactNode;
+}
+
+const makeQueryClient = () => {
+  return new QueryClient({
+    defaultOptions: {
+      queries: { staleTime: 60 * 1000 },
+    },
+  });
 };
 
-
 export function ReactQueryProvider({ children }: { children: ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(makeQueryClient);
+
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
