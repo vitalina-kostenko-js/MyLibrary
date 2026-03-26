@@ -14,7 +14,7 @@ import {
 import { useLocale } from "next-intl";
 import { useRouter as useNextRouter } from "next/navigation";
 
-type Props = {
+interface ILanguageDropdownProps {
   trigger: ReactNode;
   defaultOpen?: boolean;
   align?: "start" | "center" | "end";
@@ -25,7 +25,9 @@ const LOCALES = [
   { value: "de", label: "Deutsch" },
 ] as const;
 
-const LanguageDropdown = ({ defaultOpen, align, trigger }: Props) => {
+const LanguageDropdown = (props: ILanguageDropdownProps) => {
+  const { trigger, defaultOpen, align = "end" } = props;
+
   const nextRouter = useNextRouter();
   const locale = useLocale();
   const router = useRouter();

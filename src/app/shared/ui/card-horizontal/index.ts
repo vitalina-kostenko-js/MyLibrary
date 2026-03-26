@@ -1,1 +1,1 @@
-export { default as CardHorizontal } from "./card-horizontal.component";
+export { default as CardHorizontalComponent } from "./card-horizontal.component";

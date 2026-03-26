@@ -1,6 +1,5 @@
 "use client";
-import { useAuthStore } from "@/app/shared/store/auth.store";
-import { LoginButton, RegisterButton } from "@/app/shared/ui/auth-button";
+import { useAuthStore } from "@/src/app/shared/store/auth/auth.store";
 import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
@@ -10,12 +9,16 @@ import {
   AvatarImage,
 } from "../../../../pkg/theme/ui/avatar";
 import { Button } from "../../../../pkg/theme/ui/button";
-import { ProfileMenuContent } from "./profile-menu-content.component";
+import { LoginButtonComponent, RegisterButtonComponent } from "../auth-button";
+import ProfileMenuContentComponent from "./profile-menu-content.component";
 
-const ProfileDropdown = () => {
+const ProfileDropdownComponent = () => {
   const tLoading = useTranslations("loading");
+
   const params = useParams();
+
   const locale = (params.locale as string) ?? "en";
+
   const { data: session, status } = useSession();
 
   if (status === "loading") {
@@ -25,7 +28,7 @@ const ProfileDropdown = () => {
   if (status === "authenticated") {
     const callbackUrl = `/${locale}`;
     return (
-      <ProfileMenuContent
+      <ProfileMenuContentComponent
         session={session}
         onLogout={() => {
           useAuthStore.getState().clearAuth();
@@ -46,8 +49,8 @@ const ProfileDropdown = () => {
   if (status === "unauthenticated") {
     return (
       <div className="flex items-center gap-1.5">
-        <LoginButton />
-        <RegisterButton />
+        <LoginButtonComponent />
+        <RegisterButtonComponent />
       </div>
     );
   }
@@ -55,4 +58,4 @@ const ProfileDropdown = () => {
   return null;
 };
 
-export default ProfileDropdown;
+export default ProfileDropdownComponent;

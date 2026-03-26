@@ -1,33 +1,26 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import {
   DropdownMenu,
-  DropdownMenuLabel,
   DropdownMenuContent,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
   DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import {
+  CirclePlusIcon,
   CreditCardIcon,
+  LogOutIcon,
   SettingsIcon,
+  SquarePenIcon,
   UserIcon,
   UsersIcon,
-  SquarePenIcon,
-  CirclePlusIcon,
-  LogOutIcon,
 } from "lucide-react";
-import { ReactNode } from "react";
 import { useTranslations } from "next-intl";
+import { ReactNode } from "react";
 
-interface Props {
-  trigger: ReactNode;
-  defaultOpen?: boolean;
-  align?: "start" | "center" | "end";
-  onLogout?: () => void;
-}
-
-interface Session {
+interface ISession {
   user?: {
     name?: string | null;
     email?: string | null;
@@ -35,14 +28,19 @@ interface Session {
   };
 }
 
-export const ProfileMenuContent = ({
-  trigger,
-  defaultOpen,
-  align = "end",
-  session,
-  onLogout,
-}: Props & { session: Session }) => {
+interface IProfileMenuContentProps {
+  trigger: ReactNode;
+  defaultOpen?: boolean;
+  align?: "start" | "center" | "end";
+  onLogout?: () => void;
+  session: ISession;
+}
+
+const ProfileMenuContentComponent = (props: IProfileMenuContentProps) => {
   const t = useTranslations("profile_menu");
+
+  const { trigger, defaultOpen, align = "end", onLogout, session } = props;
+
   const { user } = session;
 
   const itemClasses =
@@ -129,3 +127,5 @@ export const ProfileMenuContent = ({
     </DropdownMenu>
   );
 };
+
+export default ProfileMenuContentComponent;

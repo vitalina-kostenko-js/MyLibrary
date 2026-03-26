@@ -1,1 +1,1 @@
-export { ContainerUI } from "./container.component";
+export {default as ContainerComponent } from "./container.component";

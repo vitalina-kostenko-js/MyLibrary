@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/src/pkg/theme/ui/card";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import {
   BookCardData,
   BookDetails,
@@ -14,25 +14,20 @@ import {
   BookFromList,
 } from "../../interfaces";
 
-interface CardDetalisProps {
+interface ICardDetalisProps {
   details: BookDetails;
   data: BookCardData;
-  children?: React.ReactNode;
-  media: React.ReactNode;
+  children?: ReactNode;
+  media: ReactNode;
   excerpts: BookExcerpts[];
   editionDetails: BookFromList;
 }
 
-export const CardDetails = ({
-  details,
-  data,
-  children,
-  media,
-  excerpts,
-  editionDetails,
-}: CardDetalisProps) => {
+const CardDetailsComponent = (props: ICardDetalisProps) => {
   const t = useTranslations("book");
+
   const [isExpanded, setIsExpanded] = useState(false);
+  const { details, data, children, media, excerpts, editionDetails } = props;
   const { description, publish_date } = details;
   const { title, author, subjects } = data;
   const { languages, number_of_pages, publishers } = editionDetails;
@@ -108,3 +103,5 @@ export const CardDetails = ({
     </Card>
   );
 };
+
+export default CardDetailsComponent;

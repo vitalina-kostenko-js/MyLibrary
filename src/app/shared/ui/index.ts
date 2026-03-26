@@ -1,4 +1,5 @@
-export { CardHorizontal } from "./card-horizontal";
-export { ContainerUI } from "./container";
-export { LanguageDropdown } from "./dropdown-language";
-export { ProfileDropdown } from "./dropdown-profile";
+export { CardHorizontalComponent } from "./card-horizontal";
+export { ContainerComponent } from "./container";
+export { LanguageDropdownComponent } from "./dropdown-language";
+export { ProfileDropdownComponent } from "./dropdown-profile";
+export { ProfileMenuContentComponent } from "./dropdown-profile";

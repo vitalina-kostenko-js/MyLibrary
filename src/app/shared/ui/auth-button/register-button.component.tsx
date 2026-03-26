@@ -5,21 +5,11 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-export const LoginButton = () => {
+const RegisterButtonComponent = () => {
   const t = useTranslations("auth_button");
-  const params = useParams();
-  const locale = (params.locale as string) ?? "en";
 
-  return (
-    <Button variant="ghost" size="default" asChild>
-      <Link href={`/${locale}/sign-in`}>{t("login")}</Link>
-    </Button>
-  );
-};
-
-export const RegisterButton = () => {
-  const t = useTranslations("auth_button");
   const params = useParams();
+
   const locale = (params.locale as string) ?? "en";
 
   return (
@@ -28,3 +18,5 @@ export const RegisterButton = () => {
     </Button>
   );
 };
+
+export default RegisterButtonComponent;

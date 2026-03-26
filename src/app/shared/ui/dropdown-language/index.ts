@@ -1,1 +1,1 @@
-export { default as LanguageDropdown } from "./dropdown-language.component";
+export { default as LanguageDropdownComponent } from "./dropdown-language.component";
