@@ -4,50 +4,55 @@ import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CardDetails } from "../../../../shared/ui/card-profile";
-import { DashboardLayout } from "../../../../widgets/dashboard-layout";
 import {
   getBookExcerpts,
   getItemPageData,
-  ItemPageProps,
 } from "../../../../features/item-details";
+import { CardDetailsComponent } from "@/app/shared/ui/card-profile";
+import { IItemPageProps } from "@/app/features/item-details";
+import { cache } from "react";
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: ItemPageProps): Promise<Metadata> {
-  const t = await getTranslations("generateMetadata");
-  const { id } = await params;
-  const sp = (await searchParams?.catch(() => ({}))) as
-    | { year?: string }
-    | undefined;
-  const data = await getItemPageData(id, undefined, sp?.year);
-  if (!data) {
-    return { title: t("notFound") };
-  }
-  const title = data.book.title ?? t("bookTitle");
-  const description =
-    typeof data.book.description === "string"
-      ? data.book.description.slice(0, 160)
-      : ((data.book.description as { value?: string })?.value?.slice(0, 160) ??
-        data.cardData.title);
+const getCachedPageData = cache(async (id: string, year?: string) => {
+  return await getItemPageData(id, undefined, year);
+});
+
+const getResolvedParams = cache(async (props: IItemPageProps) => {
+  const params = await props.params;
+  const searchParams = await props.searchParams?.catch(() => ({}));
   return {
-    title: `${title} | ${t("title")}`,
-    description: description || `${t("description")} ${title}`,
+    id: params.id,
+    locale: params.locale,
+    year: (searchParams as { year?: string })?.year,
   };
-}
+});
 
-export default async function ItemPage({
-  params,
-  searchParams,
-}: ItemPageProps) {
+export const generateMetadata = cache(
+  async (props: IItemPageProps): Promise<Metadata> => {
+    const { id, year } = await getResolvedParams(props);
+    const t = await getTranslations("generateMetadata");
+
+    const data = await getCachedPageData(id, year);
+
+    if (!data) return { title: t("notFound") };
+
+    const title = data.book.title ?? t("bookTitle");
+    const description =
+      typeof data.book.description === "string"
+        ? data.book.description
+        : (data.book.description as { value?: string })?.value;
+
+    return {
+      title: `${title} | ${t("title")}`,
+      description: description?.slice(0, 160) || `${t("description")} ${title}`,
+    };
+  },
+);
+
+const ItemPage = async (props: IItemPageProps) => {
+  const { id, locale, year } = await getResolvedParams(props);
   const t = await getTranslations("navigation");
-  const { locale, id } = await params;
-  const sp = (await searchParams?.catch(() => ({}))) as
-    | { year?: string }
-    | undefined;
 
-  const data = await getItemPageData(id, undefined, sp?.year);
+  const data = await getCachedPageData(id, year);
   if (!data) notFound();
 
   const excerpts = await getBookExcerpts(data.book.key);
@@ -62,7 +67,7 @@ export default async function ItemPage({
           </button>
         </Link>
       </div>
-      <CardDetails
+      <CardDetailsComponent
         details={details}
         data={cardData}
         editionDetails={editionDetails}
@@ -78,4 +83,6 @@ export default async function ItemPage({
       />
     </>
   );
-}
+};
+
+export default ItemPage;

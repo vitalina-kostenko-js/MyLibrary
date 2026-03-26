@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-export default async function ItemLoading() {
+const ItemLoading = async () => {
   const t = await getTranslations("loading");
 
   return (
@@ -12,3 +12,5 @@ export default async function ItemLoading() {
     </>
   );
 }
+
+export default ItemLoading;

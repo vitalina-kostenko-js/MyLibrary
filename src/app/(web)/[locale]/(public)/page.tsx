@@ -1,10 +1,15 @@
 import { MainComponent } from "@/app/modules/main";
 
-export default async function HomePage({
-  params,
-}: {
+interface IHomePageProps {
   params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  return <MainComponent locale={locale} />;
 }
+
+const HomePage = async (props: IHomePageProps) => {
+  const { params } = props;
+
+  const { locale } = await params;
+  
+  return <MainComponent locale={locale} />;
+};
+
+export default HomePage;

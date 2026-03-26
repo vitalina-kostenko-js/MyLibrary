@@ -3,7 +3,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
-import "@/config/styles/globals.css";  
+import "@/config/styles/globals.css";
 import { routing } from "../../pkg/i18n/routing";
 import { AuthSessionProvider, ReactQueryProvider } from "../shared/providers";
 
