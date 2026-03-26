@@ -1,22 +1,38 @@
 import { ensureHttpsUrl } from "../../../shared/lib/ensure-https";
 import { BookFromList, BookFromWork } from "../../../shared/interfaces";
+import { envClient } from "../../../../config/env";
 
 const DEFAULT_WORKS_LIMIT = 100;
 
+const apiBase = envClient.NEXT_PUBLIC_API_BASE_URL.replace(/\/$/, "");
+
+const fetchFromApi = async (
+  path: string,
+  init?: RequestInit,
+): Promise<Response> => {
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return fetch(ensureHttpsUrl(`${apiBase}${p}`), init);
+};
+
 export const getBooksBySubject = async (
   subject: string,
+  signal?: AbortSignal,
   limit: number = DEFAULT_WORKS_LIMIT,
 ): Promise<BookFromList[]> => {
-  const response = await fetch(
-    ensureHttpsUrl(
-      `https://openlibrary.org/subjects/${subject}.json?limit=${limit}`,
-    ),
-    { next: { revalidate: 3600 } },
+  const response = await fetchFromApi(
+    `/subjects/${encodeURIComponent(subject)}.json?limit=${limit}`,
+    {
+      cache: "force-cache",
+      next: { revalidate: 3600 },
+      signal,
+    },
   );
+
   if (!response.ok)
     throw new Error(
       `Failed to fetch books for subject "${subject}" - ${response.status}`,
     );
+
   const json = await response.json();
   const works = json?.works;
   if (!Array.isArray(works)) return [];
@@ -46,24 +62,24 @@ export const getBooksBySubject = async (
 };
 
 export const getWorkDetails = async (key: string): Promise<BookFromWork> => {
-  const response = await fetch(ensureHttpsUrl(`https://openlibrary.org/works/${key}.json`), {
-    cache: "no-store",
+  const response = await fetchFromApi(`/works/${key}.json`, {
+    cache: "force-cache",
+    next: { revalidate: 3600 },
   });
   if (!response.ok)
     throw new Error(
       `Failed to fetch book details for key "${key}" - ${response.status}`,
     );
-  const json = await response.json();
-  return json;
+  return response.json();
 };
 
 const normalizeLanguageEntry = (raw: unknown): string => {
   if (typeof raw === "string") return raw;
   if (raw && typeof raw === "object" && "key" in raw) {
-    const key = (raw as { key?: string }).key;
-    if (typeof key === "string") {
-      const seg = key.split("/").filter(Boolean).pop();
-      return seg ?? key;
+    const k = (raw as { key?: string }).key;
+    if (typeof k === "string") {
+      const seg = k.split("/").filter(Boolean).pop();
+      return seg ?? k;
     }
   }
   return "";
@@ -74,16 +90,13 @@ const normalizePublishers = (pub: unknown): string[] => {
   return pub.map((p) => (typeof p === "string" ? p : String(p)));
 };
 
-/** Picks an edition OLID for a work; prefers publish year matching `preferredYear`. */
 export const getPreferredEditionId = async (
   workId: string,
   preferredYear?: string | null,
 ): Promise<string | null> => {
-  const response = await fetch(
-    ensureHttpsUrl(
-      `https://openlibrary.org/works/${workId}/editions.json?limit=100`,
-    ),
-    { cache: "no-store" },
+  const response = await fetchFromApi(
+    `/works/${workId}/editions.json?limit=100`,
+    { cache: "force-cache", next: { revalidate: 3600 } },
   );
   if (!response.ok) return null;
   const json = (await response.json()) as {
@@ -127,17 +140,19 @@ export const getPreferredEditionId = async (
   return null;
 };
 
-export const getBookDetails = async (edition: string): Promise<BookFromList> => {
-  const response = await fetch(
-    ensureHttpsUrl(`https://openlibrary.org/books/${edition}.json`),
-    {
-      cache: "no-store",
-    },
-  );
+export const getBookDetails = async (
+  edition: string,
+): Promise<BookFromList> => {
+  const response = await fetchFromApi(`/books/${edition}.json`, {
+    cache: "force-cache",
+    next: { revalidate: 3600 },
+  });
+
   if (!response.ok)
     throw new Error(
       `Failed to fetch book details for key "${edition}" - ${response.status}`,
     );
+
   const json = (await response.json()) as Record<string, unknown>;
   const languagesRaw = json.languages;
   const languages = Array.isArray(languagesRaw)
