@@ -1,10 +1,12 @@
 import { HeaderBarComponent } from "./elements";
 import { ReactNode } from "react";
 
+//interface
 interface IDashboardLayoutProps {
   children: ReactNode;
 }
 
+//component
 export const DashboardLayoutComponent = (props: IDashboardLayoutProps) => {
   const { children } = props;
 

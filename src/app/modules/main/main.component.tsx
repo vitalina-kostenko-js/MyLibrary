@@ -1,29 +1,35 @@
-import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { getTranslations } from "next-intl/server";
+import { authOptions } from "@/app/shared/lib/auth/auth";
 import { DashboardLayoutComponent } from "@/app/widgets/dashboard-layout";
+import { type AuthOptions, getServerSession } from "next-auth";
+import { getTranslations } from "next-intl/server";
+import { Link } from "../../../pkg/locale";
 
+//interface
 interface IMainComponentProps {
   locale: string;
 }
 
+//component
 const MainComponent = async (props: IMainComponentProps) => {
   const { locale } = props;
 
   const t = await getTranslations("home");
-  const session = await getServerSession();
+
+  const session = await getServerSession(authOptions as unknown as AuthOptions);
 
   if (session) {
     return (
-      <DashboardLayoutComponent>  
+      <DashboardLayoutComponent>
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="max-w-xl space-y-6 text-center">
             <h1 className="text-4xl font-bold">
               {t("welcome")} {session.user?.name}
             </h1>
+
             <p className="text-gray-600">{t("welcomeDescription")}</p>
+
             <Link
-              href={`/${locale}/items`}
+              href="/items"
               className="rounded-md bg-black px-6 py-3 text-white"
             >
               {t("viewLibrary")}
@@ -39,18 +45,18 @@ const MainComponent = async (props: IMainComponentProps) => {
       <div className="flex flex-1 flex-col items-center justify-center">
         <div className="max-w-xl space-y-6 text-center">
           <h1 className="text-4xl font-bold">{t("title")}</h1>
+
           <p className="text-gray-600">{t("description")}</p>
+
           <div className="flex justify-center gap-4">
             <Link
-              href={`/${locale}/sign-in`}
+              href="/sign-in"
               className="rounded-md bg-black px-6 py-3 text-white"
             >
               {t("signIn")}
             </Link>
-            <Link
-              href={`/${locale}/sign-up`}
-              className="rounded-md border px-6 py-3"
-            >
+
+            <Link href="/sign-up" className="rounded-md border px-6 py-3">
               {t("signUp")}
             </Link>
           </div>
@@ -58,6 +64,6 @@ const MainComponent = async (props: IMainComponentProps) => {
       </div>
     </DashboardLayoutComponent>
   );
-}
+};
 
 export default MainComponent;

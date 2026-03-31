@@ -1,10 +1,9 @@
-import NextAuth from "next-auth";
 import type { AuthOptions, SessionStrategy } from "next-auth";
+import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { supabaseAuth } from "../supabase/client";
 
 const authOptions = {
-  basePath: "/entities/api/auth",
   secret:
     process.env.AUTH_SECRET ||
     (process.env.NODE_ENV === "development"
@@ -46,7 +45,18 @@ const authOptions = {
     }),
   ],
   callbacks: {
-    jwt({ token, user }: { token: { id?: string; email?: string; name?: string; picture?: string }; user?: { id: string; email?: string | null; name?: string | null; image?: string | null } }) {
+    jwt({
+      token,
+      user,
+    }: {
+      token: { id?: string; email?: string; name?: string; picture?: string };
+      user?: {
+        id: string;
+        email?: string | null;
+        name?: string | null;
+        image?: string | null;
+      };
+    }) {
       if (user) {
         token.id = user.id;
         token.email = user.email ?? undefined;
@@ -55,15 +65,20 @@ const authOptions = {
       }
       return token;
     },
-    session(
-      {
-        session,
-        token,
-      }: {
-        session: { user?: { id?: string; email?: string | null; name?: string | null; image?: string | null } };
-        token: { id?: string; email?: string; name?: string; picture?: string };
-      }
-    ) {
+    session({
+      session,
+      token,
+    }: {
+      session: {
+        user?: {
+          id?: string;
+          email?: string | null;
+          name?: string | null;
+          image?: string | null;
+        };
+      };
+      token: { id?: string; email?: string; name?: string; picture?: string };
+    }) {
       if (session.user) {
         (session.user as { id?: string }).id = token.id as string;
         session.user.email = token.email as string;
@@ -77,4 +92,4 @@ const authOptions = {
 
 const handler = NextAuth(authOptions as unknown as AuthOptions);
 
-export { handler, authOptions };
+export { authOptions, handler };

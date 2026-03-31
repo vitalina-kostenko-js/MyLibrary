@@ -5,25 +5,25 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { PanelLeft } from "lucide-react";
 import * as React from "react";
 
-import { useIsMobile } from "@/src/pkg/hooks/use-mobile";
-import { cn } from "@/src/pkg/lib/utils/utils";
-import { Button } from "@/src/pkg/theme/ui/button";
-import { Input } from "@/src/pkg/theme/ui/input";
-import { Separator } from "@/src/pkg/theme/ui/separator";
+import { useIsMobile } from "@/pkg/hooks/use-mobile";
+import { cn } from "@/pkg/lib/utils/utils";
+import { Button } from "@/pkg/theme/ui/button";
+import { Input } from "@/pkg/theme/ui/input";
+import { Separator } from "@/pkg/theme/ui/separator";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/src/pkg/theme/ui/sheet";
-import { Skeleton } from "@/src/pkg/theme/ui/skeleton";
+} from "@/pkg/theme/ui/sheet";
+import { Skeleton } from "@/pkg/theme/ui/skeleton";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/src/pkg/theme/ui/tooltip";
+} from "@/pkg/theme/ui/tooltip";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

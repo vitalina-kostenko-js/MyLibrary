@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/src/pkg/theme/ui/button";
+import { Button } from "@/pkg/theme/ui/button";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";

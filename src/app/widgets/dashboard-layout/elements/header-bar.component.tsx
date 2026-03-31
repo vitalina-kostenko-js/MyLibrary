@@ -2,19 +2,23 @@ import {
   LanguageDropdownComponent,
   ProfileDropdownComponent,
 } from "@/app/shared/ui";
-import { Link } from "@/src/pkg/i18n/navigation";
+import { LanguagesIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/src/pkg/theme/ui/breadcrumb";
-import { Button } from "@/src/pkg/theme/ui/button";
-import { LanguagesIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
+} from "../../../../pkg/theme/ui/breadcrumb";
+import { Button } from "../../../../pkg/theme/ui/button";
 import SearchBarComponent from "../../search-bar/search-bar.component";
+import { Link } from "../../../../pkg/locale";
 
+//interface
+interface IProps {}
+
+//component
 const HeaderBarComponent = () => {
   const t = useTranslations("navigation");
 
@@ -36,6 +40,7 @@ const HeaderBarComponent = () => {
 
         <div className="flex items-center gap-1.5">
           <SearchBarComponent />
+
           <LanguageDropdownComponent
             trigger={
               <Button variant="ghost" size="icon">
@@ -43,6 +48,7 @@ const HeaderBarComponent = () => {
               </Button>
             }
           />
+
           <ProfileDropdownComponent />
         </div>
       </div>

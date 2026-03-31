@@ -5,19 +5,13 @@ import {
   registerSchema,
 } from "@/app/features/auth-form/auth-form.schema";
 import { registerUser } from "@/app/features/auth-form/auth-form.service";
-import { Button } from "@/src/pkg/theme/ui/button";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/src/pkg/theme/ui/form";
-import { Input } from "@/src/pkg/theme/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { Button } from "../../../../../pkg/theme/ui/button";
+import { Form, FormField, FormItem, FormLabel, FormMessage } from "../../../../../pkg/theme/ui/form";
+import { Input } from "../../../../../pkg/theme/ui/input";
 
 const RegisterFormComponent = () => {
   const t = useTranslations("form_register");
@@ -36,7 +30,7 @@ const RegisterFormComponent = () => {
   const handleRegisterSubmit = async (values: RegisterFormValues) => {
     try {
       await registerUser(values);
-      router.push(`/${locale}/login`);
+      router.push(`/${locale}/sign-in`);
       router.refresh();
     } catch (err) {
       const message =

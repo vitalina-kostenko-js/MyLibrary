@@ -3,29 +3,32 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-import { usePathname, useRouter } from "@/src/pkg/i18n/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "@/src/pkg/theme/ui/dropdown-menu";
+} from "@radix-ui/react-dropdown-menu";
 import { useLocale } from "next-intl";
 import { useRouter as useNextRouter } from "next/navigation";
+import { usePathname, useRouter } from "@/pkg/locale";
 
+//interface
 interface ILanguageDropdownProps {
   trigger: ReactNode;
   defaultOpen?: boolean;
   align?: "start" | "center" | "end";
-};
+}
 
+//local
 const LOCALES = [
   { value: "en", label: "English" },
   { value: "de", label: "Deutsch" },
 ] as const;
 
-const LanguageDropdown = (props: ILanguageDropdownProps) => {
+//component
+const LanguageDropdownComponent = (props: ILanguageDropdownProps) => {
   const { trigger, defaultOpen, align = "end" } = props;
 
   const nextRouter = useNextRouter();
@@ -40,13 +43,16 @@ const LanguageDropdown = (props: ILanguageDropdownProps) => {
 
   const handleChange = (value: string) => {
     setLanguage(value);
+
     router.replace(pathnameWithoutLocale, { locale: value });
+
     nextRouter.refresh();
   };
 
   return (
     <DropdownMenu defaultOpen={defaultOpen}>
       <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
+
       <DropdownMenuContent className="w-50" align={align || "end"}>
         <DropdownMenuRadioGroup value={language} onValueChange={handleChange}>
           {LOCALES.map(({ value, label }) => (
@@ -64,4 +70,4 @@ const LanguageDropdown = (props: ILanguageDropdownProps) => {
   );
 };
 
-export default LanguageDropdown;
+export default LanguageDropdownComponent;

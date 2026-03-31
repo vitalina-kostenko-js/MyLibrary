@@ -2,22 +2,25 @@
 
 import { SearchIcon } from "lucide-react";
 
-import { Input } from "@/src/pkg/theme/ui/input";
 import { useParams, useRouter } from "next/navigation";
-import { useId } from "react";
+import { Input } from "../../../pkg/theme/ui/input";
 import { useSearch } from "../../shared/hooks/useSearch.hook";
 
+//interface
+interface IProps {}
+
+//component
 const SearchBarComponent = () => {
   const router = useRouter();
-  
-  const id = useId();
+
   const { search, setSearch } = useSearch();
   const params = useParams();
-  
+
   const locale = (params.locale as string) ?? "en";
 
   const handleSearch = () => {
     router.push(`/${locale}/items/search?query=${encodeURIComponent(search)}`);
+
     setSearch("");
   };
 
@@ -29,8 +32,8 @@ const SearchBarComponent = () => {
             <SearchIcon className="size-4" />
           </button>
         </div>
+
         <Input
-          id={id}
           type="search"
           placeholder="Search..."
           value={search}

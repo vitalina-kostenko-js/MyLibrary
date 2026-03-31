@@ -1,7 +1,11 @@
 import { signIn } from "next-auth/react";
 import { LoginFormValues, RegisterFormValues } from "./auth-form.schema";
 
-export const registerUser = async (values: RegisterFormValues, signal?: AbortSignal) => {
+//register user
+export const registerUser = async (
+  values: RegisterFormValues,
+  signal?: AbortSignal,
+) => {
   const res = await fetch("/entities/api/register", {
     cache: "no-store",
     signal,
@@ -27,7 +31,7 @@ export const registerUser = async (values: RegisterFormValues, signal?: AbortSig
   return data;
 };
 
-
+//login user
 export const loginUser = async (values: LoginFormValues) => {
   const res = await signIn("credentials", {
     email: values.email,

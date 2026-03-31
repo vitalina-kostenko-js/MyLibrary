@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { AuthState } from "./auth.interface";
 
+//auth store
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({

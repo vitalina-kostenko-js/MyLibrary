@@ -1,12 +1,12 @@
 "use client";
 
-import { Card, CardDescription, CardTitle } from "@/src/pkg/theme/ui/card";
+import { Card, CardDescription, CardTitle } from "@/pkg/theme/ui/card";
 
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/src/pkg/theme/ui/hover-card";
+} from "@/pkg/theme/ui/hover-card";
 import { useTranslations } from "next-intl";
 import type { BookCardData } from "../../interfaces";
 import { ReactNode } from "react";

@@ -1,17 +1,17 @@
 "use client";
 
+import { useBooksBySubject } from "@/app/features/books-by-subject";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useMemo } from "react";
-import { useBooksBySubject } from "@/app/entities/api/books-api";
+import { FC, useMemo } from "react";
 import { BookFromList } from "../../shared/interfaces";
-import { PaginationComponent } from "../pagination";
 import { getImageCover } from "../../shared/lib/books";
-import { mapToBookCard } from "./book-list.service";
 import { CardHorizontalComponent } from "../../shared/ui/card-horizontal";
+import { PaginationComponent } from "../pagination";
+import { mapToBookCard } from "./book-list.service";
 
+//interface
 interface BooksListComponentProps {
   dataBooks?: BookFromList[];
   subject?: string;
@@ -20,19 +20,30 @@ interface BooksListComponentProps {
 
 const getBookId = (key: string) => key.split("/").filter(Boolean).pop() ?? key;
 
-export const BooksListComponent = ({ dataBooks, subject, page }: BooksListComponentProps) => {
+//component
+const BooksListComponent: FC<Readonly<BooksListComponentProps>> = (props) => {
+  const { dataBooks, subject, page } = props;
+
   const itemsPerPage = 12;
 
   const t = useTranslations("books_list");
   const tLoading = useTranslations("loading");
-  const params = useParams();
-  const locale = (params.locale as string) ?? "en";
-  const { data: fetchedData, isLoading, error } = useBooksBySubject(subject ?? "");
+
+  const {
+    data: fetchedData,
+    isLoading,
+    error,
+  } = useBooksBySubject(subject ?? "");
+
   const data = dataBooks ?? fetchedData;
 
   const paginatedData = useMemo(() => {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
     const start = ((page ?? 1) - 1) * itemsPerPage;
+
     return data.slice(start, start + itemsPerPage);
   }, [data, page]);
 
@@ -51,16 +62,17 @@ export const BooksListComponent = ({ dataBooks, subject, page }: BooksListCompon
           itemsPerPage={itemsPerPage}
         />
       </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.isArray(data) &&
           paginatedData.map((book: BookFromList) => (
             <div key={book.key} className="min-h-0" data-testid="item-card">
               <Link
-                href={`/${locale}/items/${getBookId(book.key)}?year=${book.first_publish_year ?? ''}`}
+                href={`/items/${getBookId(book.key)}?year=${book.first_publish_year ?? ""}`}
                 className="block h-full"
               >
                 <CardHorizontalComponent
-                  data={mapToBookCard(book)}    
+                  data={mapToBookCard(book)}
                   media={
                     book.cover_id ? (
                       <div className="relative w-[120px] h-[180px]">
@@ -90,3 +102,5 @@ export const BooksListComponent = ({ dataBooks, subject, page }: BooksListCompon
     </>
   );
 };
+
+export default BooksListComponent;

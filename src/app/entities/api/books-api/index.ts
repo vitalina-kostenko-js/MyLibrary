@@ -1,8 +1,7 @@
 export {
-  getWorkDetails,
   getBooksBySubject,
-  getBookDetails,
   getPreferredEditionId,
+  getWorkDetails,
 } from "./books.api";
 
-export { useBooksBySubject } from "./use-books-by-subject.hook";
+export { bookKeys } from "./books-api.query";

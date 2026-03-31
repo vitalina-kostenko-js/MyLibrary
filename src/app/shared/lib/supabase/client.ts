@@ -1,21 +1,24 @@
 import { createClient } from "@supabase/supabase-js";
-import {
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY,
-  SUPABASE_SERVICE_ROLE_KEY,
-} from "@/config/env";
+import { envServer } from "@/config/env";
 
-/** Server-side client with service role — use for admin (e.g. createUser). */
-export const supabaseServer = createClient(
-  SUPABASE_URL,
-  SUPABASE_SERVICE_ROLE_KEY
-);
-
-/** Server-side client with anon key — use for signInWithPassword (login). */
-export const supabaseAuth = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+const supabaseOptions = {
   auth: {
     persistSession: false,
     autoRefreshToken: false,
     detectSessionInUrl: false,
   },
-});
+};
+
+// Anon-key client — used for user-facing auth (signInWithPassword)
+export const supabaseAuth = createClient(
+  envServer.SUPABASE_URL,
+  envServer.SUPABASE_ANON_KEY,
+  supabaseOptions,
+);
+
+// Service-role client — used for admin operations (createUser, etc.)
+export const supabaseServer = createClient(
+  envServer.SUPABASE_URL,
+  envServer.SUPABASE_SERVICE_ROLE_KEY,
+  supabaseOptions,
+);

@@ -5,5 +5,4 @@ export {
   getItemPageData,
 } from "./item-details.service";
 
-export { itemKeys } from "./item-details.query";
 export { mapToBookCard } from "./item-details.service";

@@ -1,5 +1,6 @@
 import { ensureHttpsUrl } from "../ensure-https";
 
+//helper function
 export const getImageCover = (cover_id: number): string => {
     return cover_id
       ? ensureHttpsUrl(

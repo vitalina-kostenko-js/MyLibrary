@@ -47,6 +47,10 @@
     "passwordConfirmationIsRequired": "Passwortbestätigung ist erforderlich.",
     "passwordsDoNotMatch": "Passwörter stimmen nicht überein."
   },
+  "auth_button": {
+    "login": "Anmelden",
+    "register": "Registrieren"
+  },
   "profile_menu": {
     "user": "Benutzer",
     "myAccount": "Mein Konto",

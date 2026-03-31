@@ -1,15 +1,20 @@
 "use client";
 
+import type { DehydratedState } from "@tanstack/react-query";
 import {
+  HydrationBoundary,
   QueryClient,
   QueryClientProvider,
-  HydrationBoundary,
 } from "@tanstack/react-query";
-import type { DehydratedState } from "@tanstack/react-query";
-import { ReactNode, useState } from "react";
+import { ReactNode, useRef } from "react";
 
-interface HydrationProps {
+//interface
+interface IHydrationProps {
   state: DehydratedState;
+  children: ReactNode;
+}
+
+interface IPropviderProps {
   children: ReactNode;
 }
 
@@ -21,14 +26,26 @@ const makeQueryClient = () => {
   });
 };
 
-export function ReactQueryProvider({ children }: { children: ReactNode }) {
-  const [queryClient] = useState(makeQueryClient);
+//query provider
+export const ReactQueryProvider = (props: IPropviderProps) => {
+  const { children } = props;
+
+  const queryClientRef = useRef<QueryClient>(null);
+
+  if (!queryClientRef.current) {
+    queryClientRef.current = makeQueryClient();
+  }
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClientRef.current}>
+      {children}
+    </QueryClientProvider>
   );
-}
+};
 
-export function ReactQueryHydration({ state, children }: HydrationProps) {
+//query hydration
+export const ReactQueryHydration = (props: IHydrationProps) => {
+  const { state, children } = props;
+
   return <HydrationBoundary state={state}>{children}</HydrationBoundary>;
-}
+};

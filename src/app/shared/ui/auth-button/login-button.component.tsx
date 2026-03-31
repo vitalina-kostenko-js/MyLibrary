@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { Button } from "@/src/pkg/theme/ui/button";
+import { Button } from "@/pkg/theme/ui/button";
 import Link from "next/link";
 
 const LoginButtonComponent = () => {

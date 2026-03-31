@@ -1,9 +1,5 @@
-import {
-  getBookDetails,
-  getPreferredEditionId,
-  getWorkDetails,
-} from "../../entities/api/books-api";
-import { ensureHttpsUrl } from "../../shared/lib/ensure-https";
+import { envClient } from "../../../config/env";
+import { getWorkDetails } from "../../entities/api/books-api";
 import {
   BookCardData,
   BookExcerpts,
@@ -11,40 +7,55 @@ import {
   BookFromWork,
 } from "../../shared/interfaces";
 import { getImageCover } from "../../shared/lib/books";
-import { envClient } from "../../../config/env";
-import { IItemPageData, OpenLibraryExcerptEntry } from "./item-details.interface";
+import { ensureHttpsUrl } from "../../shared/lib/ensure-https";
+import {
+  IItemPageData,
+  OpenLibraryExcerptEntry,
+} from "./item-details.interface";
 
+//api link
 const apiBase = envClient.NEXT_PUBLIC_API_BASE_URL;
 
 const getWorkId = (key: string) => key.split("/").filter(Boolean).pop() ?? key;
 
 const getCleanDesc = (raw: string | { value?: string }) =>
-  typeof raw === "string" ? raw : raw?.value ?? "—";
+  typeof raw === "string" ? raw : (raw?.value ?? "—");
 
-async function fetchApiJson<T>(path: string): Promise<T | null> {
+const fetchApiJson = async <T>(path: string): Promise<T | null> => {
   const res = await fetch(ensureHttpsUrl(`${apiBase}${path}`));
-  return res.ok ? ((await res.json()) as T) : null;
-}
 
+  return res.ok ? ((await res.json()) as T) : null;
+};
+
+//type
 type WorkAuthorRow = { author?: { key?: string }; key?: string };
 
-function getPrimaryAuthorKey(data: { authors?: WorkAuthorRow[] }): string | undefined {
-  const first = data.authors?.[0];
-  if (!first) return;
-  if (typeof first.author?.key === "string") return first.author.key;
-  if (typeof first.key === "string") return first.key;
-}
-
 export const getAuthorName = async (workKey: string): Promise<string> => {
-  const data = await fetchApiJson<{ authors?: WorkAuthorRow[] }>(`/works/${getWorkId(workKey)}.json`);
-  const authorKey = data ? getPrimaryAuthorKey(data) : undefined;
-  if (!authorKey) return "";
-  const author = await fetchApiJson<{ name?: string }>(`/authors/${authorKey}.json`);
+  const data = await fetchApiJson<{ authors?: WorkAuthorRow[] }>(
+    `/works/${getWorkId(workKey)}.json`,
+  );
+
+  const first = data?.authors?.[0];
+
+  const authorKey =
+    first?.author?.key ??
+    (typeof first?.key === "string" ? first.key : undefined);
+  if (!authorKey) {
+    return "";
+  }
+
+  const author = await fetchApiJson<{ name?: string }>(
+    `/authors/${authorKey}.json`,
+  );
+
   return author?.name ?? "";
 };
 
-export const mapToBookCard = async (book: BookFromWork): Promise<BookCardData> => {
+export const mapToBookCard = async (
+  book: BookFromWork,
+): Promise<BookCardData> => {
   const inline = book.authors?.[0]?.name?.trim();
+
   return {
     title: book.title,
     author: inline || (await getAuthorName(book.key)),
@@ -63,30 +74,13 @@ const editionDetailsFromWork = (book: BookFromWork): BookFromList => ({
   publishers: [],
 });
 
-async function loadEditionDetails(
-  book: BookFromWork,
-  targetId: string | null | undefined,
-): Promise<BookFromList> {
-  if (!targetId) return editionDetailsFromWork(book);
-  try {
-    return await getBookDetails(targetId);
-  } catch {
-    return editionDetailsFromWork(book);
-  }
-}
-
 export const getItemPageData = async (
   id: string,
-  editionId?: string | null,
   yearFromList?: string | null,
 ): Promise<IItemPageData | null> => {
-  const [book, preferredEditionId] = await Promise.all([
-    getWorkDetails(id),
-    editionId?.trim() ? Promise.resolve(null) : getPreferredEditionId(id, yearFromList ?? null),
-  ]);
+  const book = await getWorkDetails(id);
 
-  const targetId = editionId?.trim() || preferredEditionId;
-  const bookDetails = await loadEditionDetails(book, targetId);
+  const bookDetails = editionDetailsFromWork(book);
   const cardData = await mapToBookCard(book);
   const cleanDescription = getCleanDesc(book.description ?? "");
 
@@ -102,22 +96,33 @@ export const getItemPageData = async (
       url: book.url ? ensureHttpsUrl(book.url) : "",
       publish_date:
         yearFromList ??
-        String(book.first_publish_year ?? book.first_publish_date ?? new Date().getFullYear()),
+        String(
+          book.first_publish_year ??
+            book.first_publish_date ??
+            new Date().getFullYear(),
+        ),
     },
     editionDetails: { ...bookDetails, languages: bookDetails.languages ?? [] },
   };
 };
 
-export const getBookExcerpts = async (workKey: string): Promise<BookExcerpts[]> => {
+export const getBookExcerpts = async (
+  workKey: string,
+): Promise<BookExcerpts[]> => {
   const data = await fetchApiJson<{ excerpts?: OpenLibraryExcerptEntry[] }>(
     `/works/${getWorkId(workKey)}.json`,
   );
+
   const rows = data?.excerpts ?? [];
+
   return Promise.all(
     rows.map(async (e) => ({
       excerpt: e.value ?? e.excerpt ?? "",
       comment: e.comment ?? "",
-      author: typeof e.author?.key === "string" ? await getAuthorName(e.author.key) : "",
+      author:
+        typeof e.author?.key === "string"
+          ? await getAuthorName(e.author.key)
+          : "",
     })),
   );
 };

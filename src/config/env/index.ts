@@ -1,2 +1,2 @@
-export { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, AUTH_SECRET } from "./env.server";
 export { envClient } from "./env.client";
+export { envServer } from "./env.server";

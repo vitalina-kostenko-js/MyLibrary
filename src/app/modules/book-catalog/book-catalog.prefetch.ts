@@ -1,15 +1,13 @@
+import { bookKeys, getBooksBySubject } from "@/app/entities/api/books-api";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
-import { getBooksBySubject } from "@/app/entities/api/books-api";
 
-const listQueryKey = (subject: string) => ["booksBySubject", subject] as const;
-
-const getDehydratedBooksState = async (subject: string) => {
+export const getDehydratedBooksState = async (subject: string) => {
   const queryClient = new QueryClient();
+
   await queryClient.prefetchQuery({
-    queryKey: listQueryKey(subject),
+    queryKey: bookKeys.bySubject(subject),
     queryFn: () => getBooksBySubject(subject),
   });
-  return dehydrate(queryClient);
-}
 
-export default getDehydratedBooksState;
+  return dehydrate(queryClient);
+};

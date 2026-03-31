@@ -1,7 +1,8 @@
-import Link from "next/link";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+import Link from "next/link";
 
+//component
 const NotFoundComponent = () => {
   const t = useTranslations("notFound");
   return (
@@ -29,9 +30,7 @@ const NotFoundComponent = () => {
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center justify-center gap-2">
           {t("title")} <span className="text-xl">⚠️</span>
         </h1>
-        <p className="text-gray-500 max-w-xs mx-auto">
-          {t("description")}
-        </p>
+        <p className="text-gray-500 max-w-xs mx-auto">{t("description")}</p>
       </div>
 
       <div className="mt-10">
@@ -44,6 +43,6 @@ const NotFoundComponent = () => {
       </div>
     </div>
   );
-}
+};
 
 export default NotFoundComponent;

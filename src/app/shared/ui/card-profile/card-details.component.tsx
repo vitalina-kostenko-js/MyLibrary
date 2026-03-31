@@ -4,7 +4,7 @@ import {
   CardContent,
   CardDescription,
   CardTitle,
-} from "@/src/pkg/theme/ui/card";
+} from "@/pkg/theme/ui/card";
 import { useTranslations } from "next-intl";
 import { ReactNode, useState } from "react";
 import {

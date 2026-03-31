@@ -1,36 +1,59 @@
-import type { NextConfig } from "next";
-import createNextIntlPlugin from 'next-intl/plugin';
-import path from "path";
-import dotenv from "dotenv";
+import type { NextConfig } from 'next'
+import createNextIntlPlugin from 'next-intl/plugin'
 
-dotenv.config({ path: path.resolve(process.cwd(), 'src/config/env/.env.local') });
-const withNextIntl = createNextIntlPlugin("./src/pkg/i18n/request.ts");
+// i18n
+const withNextIntl = createNextIntlPlugin({
+  requestConfig: './src/pkg/locale/request.ts',
+  experimental: {
+    createMessagesDeclaration: './translations/en.json',
+  },
+})
 
+// config
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
+  expireTime: 604800,
+
+  logging: {
+    fetches: {
+      fullUrl: process.env.NODE_ENV !== 'production',
+    },
+  },
+
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'covers.openlibrary.org',
-        pathname: '/b/id/**',
-      },
+      { protocol: 'https', hostname: '**' },
+      { protocol: 'http', hostname: 'localhost', port: '4000' },
     ],
+    minimumCacheTTL: 86400,
+    deviceSizes: [640, 1080, 1920],
+    imageSizes: [16, 64, 128],
   },
-  /** Avoid mixed-content (HTTPS page requesting HTTP) on production deploys. */
-  async headers() {
-    if (process.env.NODE_ENV !== "production") return [];
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          {
-            key: "Content-Security-Policy",
-            value: "upgrade-insecure-requests",
-          },
-        ],
-      },
-    ];
-  },
-};
 
-export default withNextIntl(nextConfig);
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
+      },
+    },
+  },
+
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      use: ['@svgr/webpack'],
+    })
+
+    return config
+  },
+
+  headers: async () => [
+    {
+      source: '/_next/image',
+      headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, immutable' }],
+    },
+  ],
+}
+
+export default withNextIntl(nextConfig)

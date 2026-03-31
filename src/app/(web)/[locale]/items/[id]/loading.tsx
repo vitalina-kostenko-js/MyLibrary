@@ -1,5 +1,9 @@
 import { getTranslations } from "next-intl/server";
 
+//interface
+interface IProps {}
+
+//page
 const ItemLoading = async () => {
   const t = await getTranslations("loading");
 

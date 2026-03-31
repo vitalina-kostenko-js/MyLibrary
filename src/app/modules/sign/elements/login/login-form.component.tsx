@@ -6,21 +6,22 @@ import {
 } from "@/app/features/auth-form/auth-form.schema";
 import { loginUser } from "@/app/features/auth-form/auth-form.service";
 import { useAuthStore, User } from "@/app/shared/store";
-import { Button } from "@/src/pkg/theme/ui/button";
+import { Button } from "@/pkg/theme/ui/button";
 import {
   Form,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/src/pkg/theme/ui/form";
-import { Input } from "@/src/pkg/theme/ui/input";
+} from "@/pkg/theme/ui/form";
+import { Input } from "@/pkg/theme/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
+//component
 const LoginFormComponent = () => {
   const t = useTranslations("form_login");
   const tSchema = useTranslations("auth_shema");
@@ -38,11 +39,14 @@ const LoginFormComponent = () => {
   const handleLoginSubmit = async (values: LoginFormValues) => {
     try {
       const res = await loginUser(values);
+
       if (res?.error) {
-        form.setError("root", { message: res.error });
+        form.setError("root", { message: t("loginFailed") });
         return;
       }
+
       const session = await getSession();
+
       if (session?.user) {
         const user: User = {
           id: (session.user as { id?: string }).id ?? "",
@@ -50,9 +54,11 @@ const LoginFormComponent = () => {
           name: session.user.name ?? "",
           image: session.user.image ?? "",
         };
+
         const token = (session.user as { id?: string }).id ?? null;
         useAuthStore.getState().setAuth(user, token);
       }
+
       router.push(`/${locale}/items`);
       router.refresh();
     } catch {

@@ -1,3 +1,3 @@
-export interface Translate {
-    (key: string): string;
-}
+import { useTranslations } from "next-intl";
+
+export type Translate = ReturnType<typeof useTranslations<"auth_shema">>;

@@ -1,5 +1,6 @@
-import { cn } from "@/src/pkg/lib/utils/utils";
-import { buttonVariants } from "@/src/pkg/theme/ui/button";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { cn } from "../../../pkg/lib/utils/utils";
+import { buttonVariants } from "../../../pkg/theme/ui/button";
 import {
   Pagination,
   PaginationContent,
@@ -7,15 +8,16 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/src/pkg/theme/ui/pagination";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+} from "../../../pkg/theme/ui/pagination";
 
+//interface
 interface IPaginationProps {
   itemsPerPage: number;
   totalItems: number;
   onPageChange?: (page: number) => void;
 }
 
+//component
 const PaginationComponent = (props: IPaginationProps) => {
   const { itemsPerPage, totalItems, onPageChange } = props;
 
@@ -28,8 +30,11 @@ const PaginationComponent = (props: IPaginationProps) => {
 
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams.toString());
+
     params.set("page", String(newPage));
+
     router.replace(`${pathname}?${params.toString()}`);
+
     onPageChange?.(newPage);
   };
 
@@ -43,6 +48,7 @@ const PaginationComponent = (props: IPaginationProps) => {
             onClick={() => {
               if (page > 1) handlePageChange(page - 1);
             }}
+            size={undefined}
           />
         </PaginationItem>
 
@@ -59,6 +65,7 @@ const PaginationComponent = (props: IPaginationProps) => {
                     )
                   : ""
               }
+              size={undefined}
             >
               {p}
             </PaginationLink>
@@ -71,6 +78,7 @@ const PaginationComponent = (props: IPaginationProps) => {
             onClick={() => {
               if (page < totalPages) handlePageChange(page + 1);
             }}
+            size={undefined}
           />
         </PaginationItem>
       </PaginationContent>
