@@ -43,7 +43,7 @@ declare const messages: {
     "password": "Password",
     "dontHaveAccount": "Don't have an account?"
   },
-  "auth_shema": {
+  "auth_schema": {
     "invalidEmail": "Invalid email",
     "nameIsRequired": "Name is required.",
     "passwordMustBeAtLeast8CharactersLong": "Password must be at least 8 characters long",

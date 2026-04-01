@@ -3,31 +3,33 @@
 import { useBooksBySubject } from "@/app/features/books-by-subject";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { FC, useMemo } from "react";
 import { BookFromList } from "../../shared/interfaces";
 import { getImageCover } from "../../shared/lib/books";
 import { CardHorizontalComponent } from "../../shared/ui/card-horizontal";
 import { PaginationComponent } from "../pagination";
 import { mapToBookCard } from "./book-list.service";
+import { Link } from "../../../pkg/locale";
 
 //interface
 interface BooksListComponentProps {
   dataBooks?: BookFromList[];
   subject?: string;
-  page?: number;
 }
 
 const getBookId = (key: string) => key.split("/").filter(Boolean).pop() ?? key;
 
 //component
 const BooksListComponent: FC<Readonly<BooksListComponentProps>> = (props) => {
-  const { dataBooks, subject, page } = props;
-
-  const itemsPerPage = 12;
+  const { dataBooks, subject } = props;
 
   const t = useTranslations("books_list");
   const tLoading = useTranslations("loading");
+
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get("page") || "1");
+  const itemsPerPage = 12;
 
   const {
     data: fetchedData,

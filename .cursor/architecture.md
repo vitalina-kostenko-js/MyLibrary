@@ -109,3 +109,23 @@ src/
 │   └── api/
 └── e2e/
     └── flows/
+
+
+// ✅ Allowed imports
+// (web) -> modules, widgets, features, entities, shared, config, pkg
+// modules -> widgets, features, entities, shared, config, pkg
+// widgets -> features, entities, shared, config, pkg
+// features -> entities, shared, config, pkg
+// entities -> shared, config, pkg
+// shared -> config, pkg
+// config -> pkg
+// pkg -> (no other layers, only external packages)
+
+// ❌ Forbidden imports
+// shared -> entities, features, widgets, modules, (web)
+// entities -> features, widgets, modules, (web)
+// features -> widgets, modules, (web)
+// widgets -> modules, (web)
+// modules -> (web)
+// config -> any app layers
+// pkg -> any app layers

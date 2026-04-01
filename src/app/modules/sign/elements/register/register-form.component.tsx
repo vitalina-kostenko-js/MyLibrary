@@ -10,7 +10,13 @@ import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Button } from "../../../../../pkg/theme/ui/button";
-import { Form, FormField, FormItem, FormLabel, FormMessage } from "../../../../../pkg/theme/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../../../../pkg/theme/ui/form";
 import { Input } from "../../../../../pkg/theme/ui/input";
 
 const RegisterFormComponent = () => {
@@ -41,7 +47,10 @@ const RegisterFormComponent = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleRegisterSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(handleRegisterSubmit)}
+        className="space-y-4"
+      >
         {form.formState.errors.root && (
           <p className="text-destructive text-sm">
             {form.formState.errors.root.message}
@@ -54,7 +63,9 @@ const RegisterFormComponent = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("name")}</FormLabel>
+
               <Input placeholder={t("enterName")} {...field} />
+
               <FormMessage />
             </FormItem>
           )}
@@ -66,7 +77,9 @@ const RegisterFormComponent = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("email")}</FormLabel>
+
               <Input placeholder={t("enterEmail")} {...field} />
+
               <FormMessage />
             </FormItem>
           )}
@@ -78,6 +91,7 @@ const RegisterFormComponent = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("password")}</FormLabel>
+
               <Input
                 type="password"
                 placeholder={t("enterPassword")}
@@ -94,6 +108,7 @@ const RegisterFormComponent = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("confirmPassword")}</FormLabel>
+
               <Input
                 type="password"
                 placeholder={t("enterConfirmPassword")}
@@ -110,6 +125,6 @@ const RegisterFormComponent = () => {
       </form>
     </Form>
   );
-}
+};
 
 export default RegisterFormComponent;

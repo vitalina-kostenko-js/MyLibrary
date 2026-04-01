@@ -9,15 +9,11 @@ export const metadata: Metadata = {
   description: "Sign up to create your account to access your library",
 };
 
-//interfase
-interface IRegisterPageProps {
-  params: Promise<{ locale: string }>;
-}
+//interface
+interface IRegisterPageProps {}
 
 //page
 const RegisterPage = async (props: IRegisterPageProps) => {
-  const { params } = props;
-
   const tRegister = await getTranslations("form_register");
   const tLogin = await getTranslations("form_login");
 

@@ -34,6 +34,7 @@ const CardHorizontalComponent = (props: ICardHorizontalProps) => {
           <CardTitle data-testid="item-title" className="text-lg line-clamp-1">
             {title}
           </CardTitle>
+
           <CardDescription className="text-foreground/80">
             {author}
           </CardDescription>

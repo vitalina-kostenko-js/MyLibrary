@@ -12,11 +12,11 @@ const SearchPage = () => {
   const { data, isLoading, error } = useBooksSearch({ query });
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <div>Error: {error.message}</div>; //Todo: friendly error message
 
   return (
     <div className="flex min-h-[40vh] flex-col items-center justify-center gap-4">
-      <BooksListComponent dataBooks={data} subject={query} page={page} />
+      <BooksListComponent dataBooks={data} subject={query} />
     </div>
   );
 };

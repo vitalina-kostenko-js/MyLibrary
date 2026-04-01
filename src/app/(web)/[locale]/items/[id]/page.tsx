@@ -9,7 +9,7 @@ import { getItemPageData } from "../../../../features/item-details";
 import { Link } from "../../../../../pkg/locale";
 
 //dynamic
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic"; //воно не работає бо є несовпаденіє, бо деталі кеширується а сторінка ні
 
 //metadata
 export const generateMetadata = async (
@@ -43,7 +43,7 @@ const Page = async (props: IItemPageProps) => {
     notFound();
   }
 
-  const excerpts = await getBookExcerpts(data.book.key);
+  const excerpts = await getBookExcerpts(data.book);
 
   const { book, coverImageUrl, cardData, details, editionDetails } = data;
 

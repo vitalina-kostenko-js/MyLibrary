@@ -14,7 +14,7 @@ const RegisterButtonComponent = () => {
 
   return (
     <Button variant="ghost" size="default" asChild>
-      <Link href={`/${locale}/sign-up`}>{t("register")}</Link>
+      <Link href='/sign-up'>{t("register")}</Link>
     </Button>
   );
 };

@@ -10,14 +10,10 @@ export const metadata: Metadata = {
 };
 
 //interface
-interface ILoginPageProps {
-  params: Promise<{ locale: string }>;
-}
+interface ILoginPageProps {}
 
 //page
 const LoginPage = async (props: ILoginPageProps) => {
-  const { params } = props;
-
   const tLogin = await getTranslations("form_login");
   const tRegister = await getTranslations("form_register");
 

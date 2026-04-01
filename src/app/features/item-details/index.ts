@@ -1,8 +1,3 @@
 export type { IItemPageData, IItemPageProps } from "./item-details.interface";
-export {
-  getAuthorName,
-  getBookExcerpts,
-  getItemPageData,
-} from "./item-details.service";
-
-export { mapToBookCard } from "./item-details.service";
+export { getAuthorName } from "../../entities/api/books-api";
+export { getBookExcerpts, getItemPageData, mapToBookCard } from "./item-details.service";

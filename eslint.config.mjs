@@ -32,7 +32,7 @@ const eslintConfig = defineConfig([
       'no-console': 'warn',
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
-      'react-hooks/exhaustive-deps': 'off',
+      'react-hooks/exhaustive-deps': 'warn',
       'simple-import-sort/exports': 'warn',
       'react/react-in-jsx-scope': 'off',
       'react/jsx-uses-react': 'error',

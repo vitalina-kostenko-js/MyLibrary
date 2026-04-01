@@ -11,7 +11,7 @@ export const loginSchema = (t: Translate) => {
   });
 };
 
-//register shema
+//register schema
 export const registerSchema = (t: Translate) => {
   return z
     .object({

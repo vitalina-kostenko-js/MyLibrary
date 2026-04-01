@@ -1,8 +1,9 @@
 "use client";
+import "@/config/styles/globals.css";
 
 //interface
 interface IErrorComponentProps {
-  reset?: () => void;
+  reset: () => void;
 }
 
 //component

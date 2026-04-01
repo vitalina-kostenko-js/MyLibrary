@@ -20,6 +20,14 @@ export interface BookFromList extends BookBase {
   publishers?: string[];
 }
 
+/** Open Library work JSON `excerpts` entries */
+export interface WorkExcerptEntry {
+  value?: string;
+  excerpt?: string;
+  comment?: string;
+  author?: { key?: string };
+}
+
 export interface BookFromWork extends BookBase {
   cover_id?: number;
   covers?: number[];
@@ -27,6 +35,7 @@ export interface BookFromWork extends BookBase {
   first_publish_date?: string;
   description?: string | { type?: string; value?: string };
   url?: string;
+  excerpts?: WorkExcerptEntry[];
 }
 
 export type Book = BookFromList | BookFromWork;

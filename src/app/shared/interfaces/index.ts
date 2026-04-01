@@ -7,4 +7,5 @@ export type {
   BookExcerpts,
   BookFromList,
   BookFromWork,
+  WorkExcerptEntry,
 } from "./books.interface";

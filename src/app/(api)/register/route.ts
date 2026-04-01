@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabaseServer } from "../../../shared/lib/supabase";
+import { supabaseServer } from "../../shared/lib/supabase";
 
 export async function POST(request: Request) {
   try {
@@ -18,9 +18,9 @@ export async function POST(request: Request) {
       );
     }
 
-    if (password.length < 6) {
+    if (password.length < 8) {
       return NextResponse.json(
-        { error: "Password must be at least 6 characters" },
+        { error: "Password must be at least 8 characters" },
         { status: 400 },
       );
     }

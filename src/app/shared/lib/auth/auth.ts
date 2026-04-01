@@ -1,14 +1,9 @@
-import type { AuthOptions, SessionStrategy } from "next-auth";
-import NextAuth from "next-auth";
+import { NextAuthOptions, SessionStrategy } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { supabaseAuth } from "../supabase/client";
 
-const authOptions = {
-  secret:
-    process.env.AUTH_SECRET ||
-    (process.env.NODE_ENV === "development"
-      ? "dev-secret-at-least-32-chars-long"
-      : undefined),
+export const authOptions: NextAuthOptions = {
+  secret: process.env.AUTH_SECRET,
   session: {
     strategy: "jwt" as SessionStrategy,
     maxAge: 30 * 24 * 60 * 60,
@@ -20,7 +15,6 @@ const authOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           return null;
@@ -31,65 +25,37 @@ const authOptions = {
           password: credentials.password,
         });
 
-        if (error) {
+        if (error || !data.user) {
           return null;
         }
 
         return {
           id: data.user.id,
-          email: data.user.email ?? undefined,
-          name: data.user.user_metadata?.name ?? data.user.email ?? undefined,
+          email: data.user.email,
+          name: data.user.user_metadata?.name ?? data.user.email,
           image: data.user.user_metadata?.avatar_url,
         };
       },
     }),
   ],
   callbacks: {
-    jwt({
-      token,
-      user,
-    }: {
-      token: { id?: string; email?: string; name?: string; picture?: string };
-      user?: {
-        id: string;
-        email?: string | null;
-        name?: string | null;
-        image?: string | null;
-      };
-    }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.email = user.email ?? undefined;
-        token.name = user.name ?? undefined;
-        token.picture = user.image ?? undefined;
+        token.email = user.email;
+        token.name = user.name;
+        token.picture = user.image;
       }
       return token;
     },
-    session({
-      session,
-      token,
-    }: {
-      session: {
-        user?: {
-          id?: string;
-          email?: string | null;
-          name?: string | null;
-          image?: string | null;
-        };
-      };
-      token: { id?: string; email?: string; name?: string; picture?: string };
-    }) {
+    async session({ session, token }) {
       if (session.user) {
-        (session.user as { id?: string }).id = token.id as string;
-        session.user.email = token.email as string;
-        session.user.name = token.name as string;
-        session.user.image = token.picture as string;
+        (session.user as any).id = token.id;
+        session.user.email = token.email;
+        session.user.name = token.name;
+        session.user.image = token.picture;
       }
       return session;
     },
   },
 };
-
-const handler = NextAuth(authOptions as unknown as AuthOptions);
-
-export { authOptions, handler };

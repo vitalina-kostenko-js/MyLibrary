@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form";
 //component
 const LoginFormComponent = () => {
   const t = useTranslations("form_login");
-  const tSchema = useTranslations("auth_shema");
+  const tSchema = useTranslations("auth_schema");
 
   const router = useRouter();
   const params = useParams();
@@ -56,7 +56,7 @@ const LoginFormComponent = () => {
         };
 
         const token = (session.user as { id?: string }).id ?? null;
-        useAuthStore.getState().setAuth(user, token);
+        useAuthStore.getState().setAuth(user, token); //Todo: useSession як єдиний істочник правди
       }
 
       router.push(`/${locale}/items`);
@@ -84,7 +84,9 @@ const LoginFormComponent = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("email")}</FormLabel>
+
               <Input placeholder={t("enterEmail")} {...field} />
+              
               <FormMessage />
             </FormItem>
           )}
@@ -96,11 +98,13 @@ const LoginFormComponent = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("password")}</FormLabel>
+
               <Input
                 type="password"
                 placeholder={t("enterPassword")}
                 {...field}
               />
+
               <FormMessage />
             </FormItem>
           )}

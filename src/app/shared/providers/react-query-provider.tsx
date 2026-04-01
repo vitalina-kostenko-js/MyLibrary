@@ -14,7 +14,7 @@ interface IHydrationProps {
   children: ReactNode;
 }
 
-interface IPropviderProps {
+interface IProviderProps {
   children: ReactNode;
 }
 
@@ -27,7 +27,7 @@ const makeQueryClient = () => {
 };
 
 //query provider
-export const ReactQueryProvider = (props: IPropviderProps) => {
+export const ReactQueryProvider = (props: IProviderProps) => {
   const { children } = props;
 
   const queryClientRef = useRef<QueryClient>(null);

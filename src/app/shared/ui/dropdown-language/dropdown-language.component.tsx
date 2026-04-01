@@ -21,7 +21,7 @@ interface ILanguageDropdownProps {
   align?: "start" | "center" | "end";
 }
 
-//local
+//locales
 const LOCALES = [
   { value: "en", label: "English" },
   { value: "de", label: "Deutsch" },
@@ -38,13 +38,10 @@ const LanguageDropdownComponent = (props: ILanguageDropdownProps) => {
 
   const [language, setLanguage] = useState(locale);
 
-  const pathnameWithoutLocale =
-    pathname.replace(/^\/(en|de)(\/|$)/, "$2") || "/";
-
   const handleChange = (value: string) => {
     setLanguage(value);
 
-    router.replace(pathnameWithoutLocale, { locale: value });
+    router.replace(pathname, { locale: value });
 
     nextRouter.refresh();
   };

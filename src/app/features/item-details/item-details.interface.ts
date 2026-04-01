@@ -18,10 +18,3 @@ export interface IItemPageProps {
   params: Promise<{ locale: string; id: string }>;
   searchParams?: Promise<{ year?: string }>;
 }
-
-export interface OpenLibraryExcerptEntry {
-  value?: string;
-  excerpt?: string;
-  comment?: string;
-  author?: { key?: string };
-}
