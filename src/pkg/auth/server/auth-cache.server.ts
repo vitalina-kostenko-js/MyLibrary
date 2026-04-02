@@ -5,8 +5,6 @@ import { envServer } from "@/config/env";
 
 import "server-only";
 
-// Node.js-only: uses envServer (JWT_SECRET) and jose — not edge-compatible.
-// Do NOT import this file from middleware.ts.
 export const getCacheSession = async () => {
   try {
     const cookieStore = await cookies();
@@ -15,11 +13,16 @@ export const getCacheSession = async () => {
       cookieStore.get("better-auth.session_data")?.value ||
       cookieStore.get("__Secure-better-auth.session_data")?.value;
 
+    if (!cacheToken) {
+      return { user: null, session: null };
+    }
+
     const secret = new TextEncoder().encode(envServer.JWT_SECRET);
-    const { payload } = await jwtVerify(cacheToken || "", secret);
+    const { payload } = await jwtVerify(cacheToken, secret);
 
     return payload;
-  } catch {
+  } catch (error) {
+    console.error("[getCacheSession] session token verify failed:", error);
     return { user: null, session: null };
   }
 };

@@ -8,7 +8,6 @@ import {
   AvatarImage,
 } from "../../../../pkg/theme/ui/avatar";
 import { Button } from "../../../../pkg/theme/ui/button";
-import { useAuthStore } from "../../store";
 import { LoginButtonComponent, RegisterButtonComponent } from "../auth-button";
 import ProfileMenuContentComponent from "./profile-menu-content.component";
 
@@ -32,7 +31,6 @@ const ProfileDropdownComponent = () => {
       <ProfileMenuContentComponent
         session={session}
         onLogout={() => {
-          useAuthStore.getState().clearAuth();
           signOut({ callbackUrl });
         }}
         trigger={

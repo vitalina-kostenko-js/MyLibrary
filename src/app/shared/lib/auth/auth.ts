@@ -1,11 +1,11 @@
-import { NextAuthOptions, SessionStrategy } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { supabaseAuth } from "../supabase/client";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,
   session: {
-    strategy: "jwt" as SessionStrategy,
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
   },
   providers: [
@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).id = token.id;
+        session.user.id = token.id ?? "";
         session.user.email = token.email;
         session.user.name = token.name;
         session.user.image = token.picture;

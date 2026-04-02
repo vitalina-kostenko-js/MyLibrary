@@ -5,7 +5,6 @@ import {
   type LoginFormValues,
 } from "@/app/features/auth-form/auth-form.schema";
 import { loginUser } from "@/app/features/auth-form/auth-form.service";
-import { useAuthStore, User } from "@/app/shared/store";
 import { Button } from "@/pkg/theme/ui/button";
 import {
   Form,
@@ -16,7 +15,6 @@ import {
 } from "@/pkg/theme/ui/form";
 import { Input } from "@/pkg/theme/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -43,20 +41,6 @@ const LoginFormComponent = () => {
       if (res?.error) {
         form.setError("root", { message: t("loginFailed") });
         return;
-      }
-
-      const session = await getSession();
-
-      if (session?.user) {
-        const user: User = {
-          id: (session.user as { id?: string }).id ?? "",
-          email: session.user.email ?? "",
-          name: session.user.name ?? "",
-          image: session.user.image ?? "",
-        };
-
-        const token = (session.user as { id?: string }).id ?? null;
-        useAuthStore.getState().setAuth(user, token); //Todo: useSession як єдиний істочник правди
       }
 
       router.push(`/${locale}/items`);
@@ -86,7 +70,7 @@ const LoginFormComponent = () => {
               <FormLabel>{t("email")}</FormLabel>
 
               <Input placeholder={t("enterEmail")} {...field} />
-              
+
               <FormMessage />
             </FormItem>
           )}

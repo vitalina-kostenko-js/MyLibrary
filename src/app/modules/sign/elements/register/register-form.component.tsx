@@ -21,7 +21,7 @@ import { Input } from "../../../../../pkg/theme/ui/input";
 
 const RegisterFormComponent = () => {
   const t = useTranslations("form_register");
-  const tSchema = useTranslations("auth_shema");
+  const tSchema = useTranslations("auth_schema");
 
   const router = useRouter();
   const params = useParams();

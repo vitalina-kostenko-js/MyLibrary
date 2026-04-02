@@ -1,1 +1,1 @@
-export { authServer } from './auth.server'
+export { getCacheSession } from "./auth-cache.server";

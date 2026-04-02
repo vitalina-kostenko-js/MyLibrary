@@ -6,7 +6,7 @@ export const registerUser = async (
   values: RegisterFormValues,
   signal?: AbortSignal,
 ) => {
-  const res = await fetch("/entities/api/register", {
+  const res = await fetch("/register", {
     cache: "no-store",
     signal,
     method: "POST",

@@ -1,6 +1,6 @@
 import { authOptions } from "@/app/shared/lib/auth/auth";
 import { DashboardLayoutComponent } from "@/app/widgets/dashboard-layout";
-import { type AuthOptions, getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { getTranslations } from "next-intl/server";
 import { Link } from "../../../pkg/locale";
 
@@ -15,7 +15,7 @@ const MainComponent = async (props: IMainComponentProps) => {
 
   const t = await getTranslations("home");
 
-  const session = await getServerSession(authOptions as unknown as AuthOptions);
+  const session = await getServerSession(authOptions);
 
   if (session) {
     return (
