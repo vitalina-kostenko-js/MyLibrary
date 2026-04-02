@@ -1,15 +1,19 @@
-import { getBookExcerpts, IItemPageProps } from "@/app/features/item-details";
-import { CardDetailsComponent } from "@/app/shared/ui/card-profile";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getItemPageData } from "../../../../features/item-details";
 import { Link } from "../../../../../pkg/locale";
+import { Button } from "../../../../../pkg/theme/ui/button";
+import {
+  getBookExcerpts,
+  getItemPageData,
+  IItemPageProps,
+} from "../../../../features/item-details";
+import { CardDetailsComponent } from "../../../../shared/ui/card-profile";
 
 //dynamic
-// export const dynamic = "force-dynamic"; //воно не работає бо є несовпаденіє, бо деталі кеширується а сторінка ні
+// export const dynamic = "force-dynamic"; // It doesn't work because of a mismatch: the details are cached, but the page is not.
 
 //metadata
 export const generateMetadata = async (
@@ -50,12 +54,16 @@ const Page = async (props: IItemPageProps) => {
   return (
     <>
       <div className="pb-2">
-        <Link href="/items">
-          <button className="inline-flex items-center gap-1 cursor-pointer">
+        <Button
+          variant="ghost"
+          className="inline-flex items-center gap-1"
+          asChild
+        >
+          <Link href="/items">
             <ArrowLeft size={20} />
             {t("backToList")}
-          </button>
-        </Link>
+          </Link>
+        </Button>
       </div>
 
       <CardDetailsComponent

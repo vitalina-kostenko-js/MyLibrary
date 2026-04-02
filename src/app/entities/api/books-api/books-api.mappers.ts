@@ -1,5 +1,13 @@
-import { BookFromList } from "../../../shared/interfaces";
-import { normalizePublishers, OpenLibraryEdition } from "../../models/books-api";
+import type {
+  BookCardData,
+  BookFromList,
+  BookFromWork,
+} from "../../../shared/interfaces";
+import {
+  normalizePublishers,
+  OpenLibraryEdition,
+} from "../../models/books-api";
+import { getAuthorName } from "./books-api.authors";
 
 const normalizeLanguageEntry = (raw: unknown): string => {
   if (typeof raw === "string") {
@@ -32,3 +40,16 @@ export const mapOpenLibraryEditionToBookFromList = (
   publishers: normalizePublishers(json.publishers),
   number_of_pages: json.number_of_pages ?? 0,
 });
+
+export async function mapWorkBookToCard(
+  book: BookFromWork,
+): Promise<BookCardData> {
+  const inlineName = book.authors?.[0]?.name;
+
+  return {
+    title: book.title,
+    author: inlineName || (await getAuthorName(book.authors)),
+    subjects: book.subjects ?? [],
+    first_publish_year: book.first_publish_year ?? 0,
+  };
+}

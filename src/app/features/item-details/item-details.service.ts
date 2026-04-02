@@ -3,9 +3,9 @@ import {
   getBookDetails,
   getPreferredEditionId,
   getWorkDetails,
+  mapWorkBookToCard,
 } from "../../entities/api/books-api";
 import {
-  BookCardData,
   BookExcerpts,
   BookFromList,
   BookFromWork,
@@ -17,19 +17,6 @@ import { IItemPageData } from "./item-details.interface";
 
 const getCleanDesc = (raw: string | { value?: string }) =>
   typeof raw === "string" ? raw : (raw?.value ?? "—");
-
-export const mapToBookCard = async (
-  book: BookFromWork,
-): Promise<BookCardData> => {
-  const inlineName = book.authors?.[0]?.name;
-
-  return {
-    title: book.title,
-    author: inlineName || (await getAuthorName(book.authors)),
-    subjects: book.subjects ?? [],
-    first_publish_year: book.first_publish_year ?? 0,
-  };
-};
 
 const editionDetailsFromWork = (book: BookFromWork): BookFromList => ({
   key: book.key,
@@ -45,16 +32,19 @@ export const getItemPageData = async (
   id: string,
   yearFromList?: string | null,
 ): Promise<IItemPageData | null> => {
-  const book = await getWorkDetails(id);
-  if (!book) return null;
+  const [book, editionId] = await Promise.all([
+    getWorkDetails(id),
+    getPreferredEditionId(id, yearFromList),
+  ]);
 
-  const cardData = await mapToBookCard(book);
-  const cleanDescription = getCleanDesc(book.description ?? "");
+  const cleanDescription = getCleanDesc(book.description ?? "—");
 
-  const editionId = await getPreferredEditionId(id, yearFromList);
-  const editionDetails = editionId
-    ? await getBookDetails(editionId)
-    : editionDetailsFromWork(book);
+  const [cardData, editionDetails] = await Promise.all([
+    mapWorkBookToCard(book),
+    editionId
+      ? getBookDetails(editionId)
+      : Promise.resolve(editionDetailsFromWork(book)),
+  ]);
 
   return {
     book,

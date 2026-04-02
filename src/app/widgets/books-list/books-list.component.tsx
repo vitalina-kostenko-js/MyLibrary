@@ -5,12 +5,12 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { FC, useMemo } from "react";
+import { Link } from "../../../pkg/locale";
 import { BookFromList } from "../../shared/interfaces";
 import { getImageCover } from "../../shared/lib/books";
 import { CardHorizontalComponent } from "../../shared/ui/card-horizontal";
 import { PaginationComponent } from "../pagination";
-import { mapToBookCard } from "./book-list.service";
-import { Link } from "../../../pkg/locale";
+import { mapListBookToCard } from "../../shared/lib/books";
 
 //interface
 interface BooksListComponentProps {
@@ -32,22 +32,29 @@ const BooksListComponent: FC<Readonly<BooksListComponentProps>> = (props) => {
   const itemsPerPage = 12;
 
   const {
-    data: fetchedData,
+    data: fetchedPage,
     isLoading,
     error,
-  } = useBooksBySubject(subject ?? "");
+  } = useBooksBySubject(subject ?? "", page, itemsPerPage);
 
-  const data = dataBooks ?? fetchedData;
+  const listFromSubject = fetchedPage?.books;
+  const data = dataBooks ?? listFromSubject;
 
   const paginatedData = useMemo(() => {
     if (!Array.isArray(data)) {
       return [];
     }
+    if (dataBooks) {
+      const start = ((page ?? 1) - 1) * itemsPerPage;
+      return data.slice(start, start + itemsPerPage);
+    }
+    return data;
+  }, [data, dataBooks, page, itemsPerPage]);
 
-    const start = ((page ?? 1) - 1) * itemsPerPage;
-
-    return data.slice(start, start + itemsPerPage);
-  }, [data, page]);
+  const totalItems =
+    dataBooks?.length ??
+    fetchedPage?.workCount ??
+    (Array.isArray(data) ? data.length : 0);
 
   return (
     <>
@@ -60,7 +67,7 @@ const BooksListComponent: FC<Readonly<BooksListComponentProps>> = (props) => {
 
       <div className="py-2">
         <PaginationComponent
-          totalItems={data?.length ?? 0}
+          totalItems={totalItems}
           itemsPerPage={itemsPerPage}
         />
       </div>
@@ -74,7 +81,7 @@ const BooksListComponent: FC<Readonly<BooksListComponentProps>> = (props) => {
                 className="block h-full"
               >
                 <CardHorizontalComponent
-                  data={mapToBookCard(book)}
+                  data={mapListBookToCard(book)}
                   media={
                     book.cover_id ? (
                       <div className="relative w-[120px] h-[180px]">
@@ -88,7 +95,11 @@ const BooksListComponent: FC<Readonly<BooksListComponentProps>> = (props) => {
                     ) : (
                       <div className="relative w-[120px] h-[180px]">
                         <Image
-                          src="/No-Cover-Image-01.png"
+                          src={
+                            book.cover_id
+                              ? getImageCover(book.cover_id)
+                              : "/No-Cover-Image-01.png"
+                          }
                           alt={`${book.title} cover`}
                           fill
                           className="object-contain rounded p-2"
