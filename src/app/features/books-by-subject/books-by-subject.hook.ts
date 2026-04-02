@@ -3,7 +3,7 @@
 import {
   bookKeys,
   getBooksBySubject,
-  type BooksBySubjectPage,
+  type TBooksBySubjectPage,
 } from "@/app/entities/api/books-api";
 import { useQuery } from "@tanstack/react-query";
 
@@ -17,7 +17,7 @@ export const useBooksBySubject = (
 ) => {
   const safePage = Number.isFinite(page) && page > 0 ? page : 1;
 
-  return useQuery<BooksBySubjectPage>({
+  return useQuery<TBooksBySubjectPage>({
     queryKey: bookKeys.bySubject(subject, safePage, pageSize),
     queryFn: ({ signal }) =>
       getBooksBySubject(subject, {

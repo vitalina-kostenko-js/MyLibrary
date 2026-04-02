@@ -9,21 +9,21 @@ import { mapOpenLibraryEditionToBookFromList } from "./books-api.mappers";
 
 const DEFAULT_PAGE_SIZE = 12;
 
-export type GetBooksBySubjectOptions = {
+export type TGetBooksBySubjectOptions = {
   signal?: AbortSignal;
   offset?: number;
   limit?: number;
 };
 
-export type BooksBySubjectPage = {
+export type TBooksBySubjectPage = {
   books: BookFromList[];
   workCount: number;
 };
 
 export const getBooksBySubject = async (
   subject: string,
-  options?: GetBooksBySubjectOptions,
-): Promise<BooksBySubjectPage> => {
+  options?: TGetBooksBySubjectOptions,
+): Promise<TBooksBySubjectPage> => {
   const limit = options?.limit ?? DEFAULT_PAGE_SIZE;
   const offset = options?.offset ?? 0;
   const signal = options?.signal;
@@ -60,7 +60,9 @@ export const getWorkDetails = (key: string): Promise<BookFromWork> =>
     next: { revalidate: 3600, tags: [key] },
   });
 
-export const getBookDetails = async (edition: string): Promise<BookFromList> => {
+export const getBookDetails = async (
+  edition: string,
+): Promise<BookFromList> => {
   const json = await fetchJson<OpenLibraryEdition>(`/books/${edition}.json`, {
     next: { revalidate: 3600, tags: [edition] },
   });

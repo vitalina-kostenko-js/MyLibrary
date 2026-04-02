@@ -13,9 +13,11 @@ export function buildSubjectWorksPath(
     offset: String(offset),
   }).toString();
   const encoded = encodeURIComponent(subject);
+
   if (apiBase.includes("openlibrary.org")) {
     return `/subjects/${encoded}.json?${q}`;
   }
+
   return `/books/subjects/${encoded}?${q}`;
 }
 
