@@ -2,7 +2,8 @@
 
 import { SearchIcon } from "lucide-react";
 
-import { useParams, useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
 import { Input } from "../../../pkg/theme/ui/input";
 import { useSearch } from "../../shared/hooks/useSearch.hook";
 
@@ -14,9 +15,8 @@ const SearchBarComponent = () => {
   const router = useRouter();
 
   const { search, setSearch } = useSearch();
-  const params = useParams();
 
-  const locale = (params.locale as string) ?? "en";
+  const locale = useLocale();
 
   const handleSearch = () => {
     router.push(`/${locale}/items/search?query=${encodeURIComponent(search)}`);

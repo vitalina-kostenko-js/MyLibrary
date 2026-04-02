@@ -1,50 +1,87 @@
-import { NextRequest, NextResponse } from 'next/server'
-import createMiddleware from 'next-intl/middleware'
+import createMiddleware from "next-intl/middleware";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 
-import { routing } from '@/pkg/locale'
+import { routing } from "@/pkg/locale";
 
-import { authServer } from './pkg/auth/server/auth.server'
+const LOCALES = routing.locales;
 
-// middleware
-export default async function proxy(req: NextRequest) {
-  if (req.nextUrl.pathname.startsWith('/api/')) {
-    return NextResponse.next()
+type AppLocale = (typeof LOCALES)[number];
+
+function isAppLocale(segment: string): segment is AppLocale {
+  return (LOCALES as readonly string[]).includes(segment);
+}
+
+function stripLocalePrefix(pathname: string): string {
+  const segments = pathname.split("/").filter(Boolean);
+  if (segments.length === 0) return "/";
+
+  const [first, ...rest] = segments;
+  if (isAppLocale(first)) {
+    return rest.length ? `/${rest.join("/")}` : "/";
   }
 
-  const i18nRes = createMiddleware(routing)(req)
+  return pathname.startsWith("/") ? pathname : `/${pathname}`;
+}
+
+function localeFromPathname(pathname: string): string {
+  const first = pathname.split("/").filter(Boolean)[0];
+  if (first && isAppLocale(first)) return first;
+  return routing.defaultLocale;
+}
+
+function withLocale(path: string, locale: string): string {
+  const p = path.startsWith("/") ? path : `/${path}`;
+  if (locale === routing.defaultLocale) return p;
+  return `/${locale}${p}`;
+}
+
+export default async function proxy(req: NextRequest) {
+  if (req.nextUrl.pathname.startsWith("/api/")) {
+    return NextResponse.next();
+  }
+
+  const pathname = req.nextUrl.pathname;
+  const pathWithoutLocale = stripLocalePrefix(pathname);
+  const locale = localeFromPathname(pathname);
+
+  const i18nRes = createMiddleware(routing)(req);
 
   const country =
-    req.headers.get('cf-ipcountry') ||
-    req.headers.get('cloudfront-viewer-country') ||
-    req.headers.get('X-Country') ||
-    req.cookies.get('country')?.value ||
-    'N/A'
+    req.headers.get("cf-ipcountry") ||
+    req.headers.get("cloudfront-viewer-country") ||
+    req.headers.get("X-Country") ||
+    req.cookies.get("country")?.value ||
+    "N/A";
 
-  i18nRes.headers.set('x-country', country)
-  i18nRes.cookies.set('x-country', country)
+  i18nRes.headers.set("x-country", country);
+  i18nRes.cookies.set("x-country", country);
 
-  if (req.nextUrl.pathname.startsWith('/dashboard')) {
-    const session = await authServer.getSession()
+  const needsAuthCheck =
+    pathWithoutLocale.startsWith("/dashboard") ||
+    pathWithoutLocale.startsWith("/sign-in");
 
-    if (!session) {
-      return NextResponse.redirect(new URL('/sign-in', req.url))
-    }
+  const token = needsAuthCheck
+    ? await getToken({ req, secret: process.env.AUTH_SECRET })
+    : null;
+
+  if (pathWithoutLocale.startsWith("/dashboard") && !token) {
+    return NextResponse.redirect(
+      new URL(withLocale("/sign-in", locale), req.url),
+    );
   }
 
-  if (req.nextUrl.pathname.startsWith('/sign-in')) {
-    const session = await authServer.getSession()
-
-    if (session) {
-      return NextResponse.redirect(new URL('/dashboard', req.url))
-    }
+  if (pathWithoutLocale.startsWith("/sign-in") && token) {
+    return NextResponse.redirect(
+      new URL(withLocale("/dashboard", locale), req.url),
+    );
   }
 
-  return i18nRes
+  return i18nRes;
 }
 
-// config
 export const config = {
   matcher: [
-   '/((?!api|auth|_next/static|_next/image|favicon.ico|.*\\.png$).*)',
+    "/((?!api|auth|register|books|_next/static|_next/image|favicon.ico|.*\\.png$).*)",
   ],
-}
+};
