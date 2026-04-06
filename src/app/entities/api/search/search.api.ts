@@ -1,15 +1,16 @@
-import type { BookFromList } from "@/app/shared/interfaces";
+import type { IBookFromList } from "@/app/entities/models/books-api";
 import { envClient } from "../../../../config/env";
 
 //interface
-interface IProps  {
+interface IProps {
   key?: string;
   title?: string;
   author_name?: string[];
   author_key?: string[];
   first_publish_year?: number;
   cover_i?: number;
-};
+  subjects?: string[];
+}
 
 //limit
 const DEFAULT_WORKS_LIMIT = 100;
@@ -21,7 +22,7 @@ const apiBase = envClient.NEXT_PUBLIC_API_BASE_URL.replace(/\/$/, "");
 export const searchBooksAsList = async (
   query: string,
   signal?: AbortSignal,
-): Promise<BookFromList[]> => {
+): Promise<IBookFromList[]> => {
   const q = query.trim();
   if (!q) return [];
 
@@ -47,9 +48,9 @@ export const searchBooksAsList = async (
       key: d.key ?? "",
       title: d.title ?? "",
       authors,
-      subjects: [],
+      subjects: Array.isArray(d.subjects) ? d.subjects : [],
       cover_id: d.cover_i,
       first_publish_year: d.first_publish_year,
     };
   });
-}
+};

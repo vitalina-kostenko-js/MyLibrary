@@ -1,14 +1,13 @@
-export { getAuthorName, type WorkAuthorRow } from "./books-api.authors";
-export { getPreferredEditionId } from "./books-api.editions";
+export { getAuthorName } from "./authors.api";
 export { getBookDetails, getBooksBySubject, getWorkDetails } from "./books.api";
+export { getPreferredEditionId } from "./editions.api";
 
-export type {
-  TBooksBySubjectPage,
-  TGetBooksBySubjectOptions,
-} from "./books.api";
-
+export { bookKeys } from "./books-api.query";
 export {
   mapOpenLibraryEditionToBookFromList,
   mapWorkBookToCard,
-} from "./books-api.mappers";
-export { bookKeys } from "./books-api.query";
+} from "./mappers.api";
+
+export type { TBooksBySubjectPage } from "./books.api";
+
+export { useBooksBySubject } from "./books-api.query";

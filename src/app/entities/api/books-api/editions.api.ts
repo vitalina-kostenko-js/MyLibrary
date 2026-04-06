@@ -1,9 +1,9 @@
-import { EditionEntry, parseYear } from "../../models/books-api";
-import { fetchJson, olRevalidate } from "./books-api.http";
+import { IEditionEntry, parseYear } from "../../models/books-api";
+import { fetchJson } from "./http.api";
 
 const DEFAULT_WORKS_LIMIT = 100;
 
-const getEditionId = (e: EditionEntry): string | null => {
+const getEditionId = (e: IEditionEntry): string | null => {
   const k = e.key;
 
   if (typeof k !== "string" || !k.includes("/books/")) {
@@ -20,9 +20,9 @@ export const getPreferredEditionId = async (
   preferredYear?: string | null,
   limit: number = DEFAULT_WORKS_LIMIT,
 ): Promise<string | null> => {
-  const json = await fetchJson<{ entries?: EditionEntry[] }>(
+  const json = await fetchJson<{ entries?: IEditionEntry[] }>(
     `/works/${workId}/editions.json?limit=${limit}`,
-    olRevalidate,
+    { next: { revalidate: 3600 } },
   );
 
   const entries = json?.entries;
@@ -39,7 +39,9 @@ export const getPreferredEditionId = async (
     for (const e of entries) {
       const id = getEditionId(e);
 
-      if (!id) continue;
+      if (!id) {
+        continue;
+      }
 
       if (parseYear(e.publish_date) === targetYear) {
         return id;

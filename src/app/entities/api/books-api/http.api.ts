@@ -3,11 +3,11 @@ import { ensureHttpsUrl } from "../../../shared/lib/ensure-https";
 
 const apiBase = envClient.NEXT_PUBLIC_API_BASE_URL.replace(/\/$/, "");
 
-export function buildSubjectWorksPath(
+export const buildSubjectWorksPath = (
   subject: string,
   limit: number,
   offset: number,
-): string {
+): string => {
   const q = new URLSearchParams({
     limit: String(limit),
     offset: String(offset),
@@ -19,9 +19,7 @@ export function buildSubjectWorksPath(
   }
 
   return `/books/subjects/${encoded}?${q}`;
-}
-
-export const olRevalidate: RequestInit = { next: { revalidate: 3600 } };
+};
 
 export const fetchFromApi = (
   path: string,

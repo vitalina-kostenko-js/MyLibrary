@@ -9,8 +9,8 @@ import {
   getBookExcerpts,
   getItemPageData,
   IItemPageProps,
-} from "../../../../features/item-details";
-import { CardDetailsComponent } from "../../../../shared/ui/card-profile";
+} from "../../../../modules/item-details";
+import { CardDetailsComponent } from "../../../../widgets/card-profile";
 
 //dynamic
 // export const dynamic = "force-dynamic"; // It doesn't work because of a mismatch: the details are cached, but the page is not.

@@ -6,11 +6,11 @@ import {
   mapWorkBookToCard,
 } from "../../entities/api/books-api";
 import {
-  BookExcerpts,
-  BookFromList,
-  BookFromWork,
-  WorkExcerptEntry,
-} from "../../shared/interfaces";
+  IBookExcerpts,
+  IBookFromList,
+  IBookFromWork,
+  IWorkExcerptEntry,
+} from "../../entities/models/books-api";
 import { getImageCover } from "../../shared/lib/books";
 import { ensureHttpsUrl } from "../../shared/lib/ensure-https";
 import { IItemPageData } from "./item-details.interface";
@@ -18,7 +18,7 @@ import { IItemPageData } from "./item-details.interface";
 const getCleanDesc = (raw: string | { value?: string }) =>
   typeof raw === "string" ? raw : (raw?.value ?? "—");
 
-const editionDetailsFromWork = (book: BookFromWork): BookFromList => ({
+const editionDetailsFromWork = (book: IBookFromWork): IBookFromList => ({
   key: book.key,
   title: book.title,
   authors: book.authors ?? [],
@@ -32,19 +32,26 @@ export const getItemPageData = async (
   id: string,
   yearFromList?: string | null,
 ): Promise<IItemPageData | null> => {
-  const [book, editionId] = await Promise.all([
-    getWorkDetails(id),
-    getPreferredEditionId(id, yearFromList),
+  const bookPromise = getWorkDetails(id);
+  const editionIdPromise = getPreferredEditionId(id, yearFromList);
+
+  const cardDataPromise = bookPromise.then((book) => mapWorkBookToCard(book));
+
+  const editionDetailsPromise = Promise.all([
+    bookPromise,
+    editionIdPromise,
+  ]).then(([book, editionId]) => {
+    return editionId ? getBookDetails(editionId) : editionDetailsFromWork(book);
+  });
+
+  const [book, editionId, cardData, editionDetails] = await Promise.all([
+    bookPromise,
+    editionIdPromise,
+    cardDataPromise,
+    editionDetailsPromise,
   ]);
 
   const cleanDescription = getCleanDesc(book.description ?? "—");
-
-  const [cardData, editionDetails] = await Promise.all([
-    mapWorkBookToCard(book),
-    editionId
-      ? getBookDetails(editionId)
-      : Promise.resolve(editionDetailsFromWork(book)),
-  ]);
 
   return {
     book,
@@ -69,12 +76,12 @@ export const getItemPageData = async (
 };
 
 export const getBookExcerpts = async (
-  book: BookFromWork,
-): Promise<BookExcerpts[]> => {
+  book: IBookFromWork,
+): Promise<IBookExcerpts[]> => {
   const rows = book.excerpts ?? [];
 
   return Promise.all(
-    rows.map(async (e: WorkExcerptEntry) => ({
+    rows.map(async (e: IWorkExcerptEntry) => ({
       excerpt: e.value ?? e.excerpt ?? "",
       comment: e.comment ?? "",
       author: e.author?.key ? await getAuthorName(e.author.key) : "",

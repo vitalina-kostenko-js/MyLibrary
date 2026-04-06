@@ -1,22 +1,18 @@
-import { BookFromList, BookFromWork } from "../../../shared/interfaces";
-import { OpenLibraryEdition, OpenLibraryWork } from "../../models/books-api";
-import {
-  buildSubjectWorksPath,
-  fetchJson,
-  olRevalidate,
-} from "./books-api.http";
-import { mapOpenLibraryEditionToBookFromList } from "./books-api.mappers";
+import { IBookFromList, IBookFromWork } from "../../models/books-api";
+import { IOpenLibraryEdition, IOpenLibraryWork } from "../../models/books-api";
+import { buildSubjectWorksPath, fetchJson } from "./http.api";
+import { mapOpenLibraryEditionToBookFromList } from "./mappers.api";
 
 const DEFAULT_PAGE_SIZE = 12;
 
-export type TGetBooksBySubjectOptions = {
+type TGetBooksBySubjectOptions = {
   signal?: AbortSignal;
   offset?: number;
   limit?: number;
 };
 
 export type TBooksBySubjectPage = {
-  books: BookFromList[];
+  books: IBookFromList[];
   workCount: number;
 };
 
@@ -29,10 +25,11 @@ export const getBooksBySubject = async (
   const signal = options?.signal;
 
   const json = await fetchJson<{
-    works?: OpenLibraryWork[];
+    works?: IOpenLibraryWork[];
     work_count?: number;
   }>(buildSubjectWorksPath(subject, limit, offset), {
-    ...olRevalidate,
+    next: { revalidate: 3600 },
+    cache: "force-cache",
     signal,
   });
 
@@ -55,16 +52,24 @@ export const getBooksBySubject = async (
   return { books, workCount };
 };
 
-export const getWorkDetails = (key: string): Promise<BookFromWork> =>
-  fetchJson<BookFromWork>(`/works/${key}.json`, {
-    next: { revalidate: 3600, tags: [key] },
+export const getWorkDetails = (key: string): Promise<IBookFromWork> =>
+  fetchJson<IBookFromWork>(`/works/${key}.json`, {
+    next: {
+      revalidate: 3600,
+      tags: [key],
+    },
+    cache: "force-cache",
   });
 
 export const getBookDetails = async (
   edition: string,
-): Promise<BookFromList> => {
-  const json = await fetchJson<OpenLibraryEdition>(`/books/${edition}.json`, {
-    next: { revalidate: 3600, tags: [edition] },
+): Promise<IBookFromList> => {
+  const json = await fetchJson<IOpenLibraryEdition>(`/books/${edition}.json`, {
+    next: {
+      revalidate: 3600,
+      tags: [edition],
+    },
+    cache: "force-cache",
   });
 
   return mapOpenLibraryEditionToBookFromList(json);

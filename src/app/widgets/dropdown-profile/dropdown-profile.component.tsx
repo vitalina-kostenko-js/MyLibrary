@@ -6,11 +6,15 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "../../../../pkg/theme/ui/avatar";
-import { Button } from "../../../../pkg/theme/ui/button";
-import { LoginButtonComponent, RegisterButtonComponent } from "../auth-button";
+} from "../../../pkg/theme/ui/avatar";
+import { Button } from "../../../pkg/theme/ui/button";
+import {
+  LoginButtonComponent,
+  RegisterButtonComponent,
+} from "../../features/auth-button";
 import ProfileMenuContentComponent from "./profile-menu-content.component";
 
+//component
 const ProfileDropdownComponent = () => {
   const tLoading = useTranslations("loading");
 
@@ -21,7 +25,7 @@ const ProfileDropdownComponent = () => {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
-    return <div>{tLoading("loading")}</div>;
+    return <span>{tLoading("loading")}</span>;
   }
 
   if (status === "authenticated") {

@@ -1,5 +1,11 @@
 "use client";
 import {
+  IBookCardData,
+  IBookDetails,
+  IBookExcerpts,
+  IBookFromList,
+} from "@/app/entities/models/books-api";
+import {
   Card,
   CardContent,
   CardDescription,
@@ -7,22 +13,18 @@ import {
 } from "@/pkg/theme/ui/card";
 import { useTranslations } from "next-intl";
 import { ReactNode, useState } from "react";
-import {
-  BookCardData,
-  BookDetails,
-  BookExcerpts,
-  BookFromList,
-} from "../../interfaces";
 
+//interface
 interface ICardDetalisProps {
-  details: BookDetails;
-  data: BookCardData;
+  details: IBookDetails;
+  data: IBookCardData;
   children?: ReactNode;
   media: ReactNode;
-  excerpts: BookExcerpts[];
-  editionDetails: BookFromList;
+  excerpts: IBookExcerpts[];
+  editionDetails: IBookFromList;
 }
 
+//component
 const CardDetailsComponent = (props: ICardDetalisProps) => {
   const t = useTranslations("book");
 
@@ -37,7 +39,6 @@ const CardDetailsComponent = (props: ICardDetalisProps) => {
       {/* book cover and information */}
       <div className="flex flex-col md:flex-row gap-8 mb-10">
         <div className="flex-shrink-0 flex justify-center">
-
           <div className="relative w-[200px] h-[300px] sm:w-[350px] sm:h-[500px] shadow-xl">
             {media ?? null}
           </div>
@@ -61,7 +62,6 @@ const CardDetailsComponent = (props: ICardDetalisProps) => {
             <span>{author || "—"}</span>
           </div>
           <div>
-
             <div
               className={isExpanded ? "" : "line-clamp-3 text-muted-foreground"}
             >
@@ -74,7 +74,6 @@ const CardDetailsComponent = (props: ICardDetalisProps) => {
             >
               {isExpanded ? "Collapse" : "Read more"}
             </button>
-
           </div>
           <div className="mt-auto pt-4 border-t italic text-sm text-muted-foreground">
             <div>
@@ -89,15 +88,12 @@ const CardDetailsComponent = (props: ICardDetalisProps) => {
 
       {/* fragments book */}
       <div className="flex flex-col items-center justify-center w-full border-t pt-10">
-
         <h3 className="text-xl font-bold mb-6">Text fragments</h3>
 
         <Card className="w-full max-w-3xl bg-secondary/20">
           <CardContent className="flex flex-col items-center justify-center text-center p-8 min-h-[150px] gap-6">
-
             {excerpts.map((excerpt, index) => (
               <div key={index} className="space-y-2">
-
                 <blockquote className="text-lg italic font-medium leading-relaxed">
                   &quot;{excerpt.excerpt}&quot;
                 </blockquote>

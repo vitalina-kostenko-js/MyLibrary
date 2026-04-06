@@ -1,10 +1,12 @@
-import createMiddleware from "next-intl/middleware";
 import { getToken } from "next-auth/jwt";
+import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
 
 import { routing } from "@/pkg/locale";
 
 const LOCALES = routing.locales;
+const PROTECTED_PATHS = ["/items"];
+const AUTH_PATHS = ["/sign-in", "/sign-up"];
 
 type AppLocale = (typeof LOCALES)[number];
 
@@ -36,7 +38,7 @@ function withLocale(path: string, locale: string): string {
   return `/${locale}${p}`;
 }
 
-export default async function proxy(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
@@ -44,6 +46,27 @@ export default async function proxy(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   const pathWithoutLocale = stripLocalePrefix(pathname);
   const locale = localeFromPathname(pathname);
+
+  const isProtected = PROTECTED_PATHS.some((p) =>
+    pathWithoutLocale.startsWith(p),
+  );
+  const isAuthPage = AUTH_PATHS.some((p) => pathWithoutLocale.startsWith(p));
+
+  const token =
+    isProtected || isAuthPage
+      ? await getToken({ req, secret: process.env.AUTH_SECRET })
+      : null;
+
+  if (isProtected && !token) {
+    return NextResponse.redirect(
+      new URL(withLocale("/sign-in", locale), req.url),
+    );
+  }
+  if (isAuthPage && token) {
+    return NextResponse.redirect(
+      new URL(withLocale("/items", locale), req.url),
+    );
+  }
 
   const i18nRes = createMiddleware(routing)(req);
 
@@ -56,26 +79,6 @@ export default async function proxy(req: NextRequest) {
 
   i18nRes.headers.set("x-country", country);
   i18nRes.cookies.set("x-country", country);
-
-  const needsAuthCheck =
-    pathWithoutLocale.startsWith("/dashboard") ||
-    pathWithoutLocale.startsWith("/sign-in");
-
-  const token = needsAuthCheck
-    ? await getToken({ req, secret: process.env.AUTH_SECRET })
-    : null;
-
-  if (pathWithoutLocale.startsWith("/dashboard") && !token) {
-    return NextResponse.redirect(
-      new URL(withLocale("/sign-in", locale), req.url),
-    );
-  }
-
-  if (pathWithoutLocale.startsWith("/sign-in") && token) {
-    return NextResponse.redirect(
-      new URL(withLocale("/dashboard", locale), req.url),
-    );
-  }
 
   return i18nRes;
 }

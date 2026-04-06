@@ -1,10 +1,12 @@
-import { fetchJsonOrNull, olRevalidate } from "./books-api.http";
+import { fetchJsonOrNull } from "./http.api";
 
-export type WorkAuthorRow = { author?: { key?: string }; key?: string };
+type TWorkAuthorRow = { author?: { key?: string }; key?: string };
 
 const authorKeyToJsonPath = (raw: string): string | null => {
   const k = raw.trim().replace(/^\/+/, "");
-  if (!k) return null;
+  if (!k) {
+    return null;
+  }
 
   if (k.startsWith("people/") || k.startsWith("authors/")) {
     return `/${k}.json`;
@@ -14,7 +16,7 @@ const authorKeyToJsonPath = (raw: string): string | null => {
 };
 
 const extractAuthorKeyString = (
-  authorKeyOrList: string | WorkAuthorRow[],
+  authorKeyOrList: string | TWorkAuthorRow[],
 ): string | undefined => {
   if (typeof authorKeyOrList === "string") {
     return authorKeyOrList;
@@ -22,23 +24,26 @@ const extractAuthorKeyString = (
 
   if (Array.isArray(authorKeyOrList) && authorKeyOrList.length > 0) {
     const first = authorKeyOrList[0];
+
     return first?.author?.key ?? first?.key;
   }
 
-  return undefined;
+  return "";
 };
 
 export const getAuthorName = async (
-  authorKeyOrList: string | WorkAuthorRow[],
+  authorKeyOrList: string | TWorkAuthorRow[],
 ): Promise<string> => {
   const rawKey = extractAuthorKeyString(authorKeyOrList);
   const path = rawKey ? authorKeyToJsonPath(rawKey) : null;
 
-  if (!path) return "";
+  if (!path) {
+    return "";
+  }
 
   const doc = await fetchJsonOrNull<{ name?: string; displayname?: string }>(
     path,
-    olRevalidate,
+    { next: { revalidate: 3600 } },
   );
 
   return doc?.name ?? doc?.displayname ?? "";

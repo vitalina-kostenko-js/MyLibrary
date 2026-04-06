@@ -1,19 +1,17 @@
-import {
-  LanguageDropdownComponent,
-  ProfileDropdownComponent,
-} from "@/app/shared/ui";
 import { LanguagesIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Link } from "../../../pkg/locale";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "../../../../pkg/theme/ui/breadcrumb";
-import { Button } from "../../../../pkg/theme/ui/button";
-import SearchBarComponent from "../../search-bar/search-bar.component";
-import { Link } from "../../../../pkg/locale";
+} from "../../../pkg/theme/ui/breadcrumb";
+import { Button } from "../../../pkg/theme/ui/button";
+import { LanguageDropdownComponent } from "../dropdown-language";
+import { ProfileDropdownComponent } from "../dropdown-profile";
+import SearchBarComponent from "../search-bar/search-bar.component";
 
 //interface
 interface IProps {}
@@ -33,6 +31,7 @@ const HeaderBarComponent = () => {
                   <Link href="/">{t("home")}</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
+
               <BreadcrumbSeparator />
             </BreadcrumbList>
           </Breadcrumb>

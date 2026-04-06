@@ -2,21 +2,23 @@
 
 import { Card, CardDescription, CardTitle } from "@/pkg/theme/ui/card";
 
+import { IBookCardData } from "@/app/entities/models/books-api";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/pkg/theme/ui/hover-card";
 import { useTranslations } from "next-intl";
-import type { BookCardData } from "../../interfaces";
 import { ReactNode } from "react";
 
+//interface
 interface ICardHorizontalProps {
-  data: BookCardData;
+  data: IBookCardData;
   media?: ReactNode;
   children?: ReactNode;
 }
 
+//component
 const CardHorizontalComponent = (props: ICardHorizontalProps) => {
   const t = useTranslations("book");
 

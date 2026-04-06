@@ -1,13 +1,13 @@
-import type {
-  BookCardData,
-  BookFromList,
-  BookFromWork,
-} from "../../../shared/interfaces";
 import {
-  normalizePublishers,
-  OpenLibraryEdition,
+  IBookCardData,
+  IBookFromList,
+  IBookFromWork,
 } from "../../models/books-api";
-import { getAuthorName } from "./books-api.authors";
+import {
+  IOpenLibraryEdition,
+  normalizePublishers,
+} from "../../models/books-api";
+import { getAuthorName } from "./authors.api";
 
 const normalizeLanguageEntry = (raw: unknown): string => {
   if (typeof raw === "string") {
@@ -27,8 +27,8 @@ const normalizeLanguageEntry = (raw: unknown): string => {
 };
 
 export const mapOpenLibraryEditionToBookFromList = (
-  json: OpenLibraryEdition,
-): BookFromList => ({
+  json: IOpenLibraryEdition,
+): IBookFromList => ({
   key: json.key,
   title: json.title,
   cover_id: json.covers?.[0],
@@ -41,9 +41,9 @@ export const mapOpenLibraryEditionToBookFromList = (
   number_of_pages: json.number_of_pages ?? 0,
 });
 
-export async function mapWorkBookToCard(
-  book: BookFromWork,
-): Promise<BookCardData> {
+export const mapWorkBookToCard = async (
+  book: IBookFromWork,
+): Promise<IBookCardData> => {
   const inlineName = book.authors?.[0]?.name;
 
   return {
@@ -52,4 +52,4 @@ export async function mapWorkBookToCard(
     subjects: book.subjects ?? [],
     first_publish_year: book.first_publish_year ?? 0,
   };
-}
+};

@@ -1,17 +1,17 @@
 import {
-  BookCardData,
-  BookDetails,
-  BookFromList,
-  BookFromWork,
-} from "../../shared/interfaces";
+  IBookCardData,
+  IBookDetails,
+  IBookFromList,
+  IBookFromWork,
+} from "../../entities/models/books-api";
 
 export interface IItemPageData {
-  book: BookFromWork;
+  book: IBookFromWork;
   coverImageUrl: string;
   cleanDescription: string;
-  cardData: BookCardData;
-  details: BookDetails;
-  editionDetails: BookFromList;
+  cardData: IBookCardData;
+  details: IBookDetails;
+  editionDetails: IBookFromList;
 }
 
 export interface IItemPageProps {

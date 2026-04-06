@@ -6,11 +6,11 @@ interface IProps {
   children: ReactNode
 }
 
-//layout
+//component
 const ItemsLayout = (props: IProps) => {
   const {children} = props
 
-  return <LayoutComponent type="public">{children}</LayoutComponent>;
+  return <LayoutComponent>{children}</LayoutComponent>;
 }
 
 export default ItemsLayout

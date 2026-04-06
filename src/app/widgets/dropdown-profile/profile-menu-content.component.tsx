@@ -20,6 +20,7 @@ import {
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 
+//interface
 interface ISession {
   user?: {
     name?: string | null;
@@ -36,6 +37,7 @@ interface IProfileMenuContentProps {
   session: ISession;
 }
 
+//component
 const ProfileMenuContentComponent = (props: IProfileMenuContentProps) => {
   const t = useTranslations("profile_menu");
 

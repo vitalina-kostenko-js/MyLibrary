@@ -2,8 +2,8 @@
 
 import { Button } from "@/pkg/theme/ui/button";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
 import { useParams } from "next/navigation";
+import { Link } from "../../../pkg/locale";
 
 const RegisterButtonComponent = () => {
   const t = useTranslations("auth_button");
@@ -14,7 +14,7 @@ const RegisterButtonComponent = () => {
 
   return (
     <Button variant="ghost" size="default" asChild>
-      <Link href='/sign-up'>{t("register")}</Link>
+      <Link href="/sign-up">{t("register")}</Link>
     </Button>
   );
 };

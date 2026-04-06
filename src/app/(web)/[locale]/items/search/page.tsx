@@ -1,24 +1,24 @@
-"use client";
-import { useBooksSearch } from "@/app/features/books-search";
-import { useSearch } from "@/app/shared/hooks";
 import { BooksListComponent } from "@/app/widgets/books-list";
+import { FC } from "react";
+import { getDehydratedBooksState } from "../../../../modules/book-catalog/book-catalog.prefetch";
+import { ReactQueryHydration } from "../../../../shared/providers/react-query-provider";
 
 //interface
-interface IProps {}
+interface IProps {
+  searchParams: Promise<{ query?: string }>;
+}
 
 //page
-const SearchPage = () => {
-  const { query, page } = useSearch();
-  const { data, isLoading, error } = useBooksSearch({ query });
+const SearchPage: FC<Readonly<IProps>> = async (props) => {
+  const { searchParams } = props;
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>; //Todo: friendly error message
+  const { query } = await searchParams;
+  const dehydratedState = await getDehydratedBooksState(query ?? "");
 
   return (
-    <div className="flex min-h-[40vh] flex-col items-center justify-center gap-4">
-      <BooksListComponent dataBooks={data} subject={query} />
-    </div>
+    <ReactQueryHydration state={dehydratedState}>
+      <BooksListComponent subject={query} />
+    </ReactQueryHydration>
   );
 };
-
 export default SearchPage;
